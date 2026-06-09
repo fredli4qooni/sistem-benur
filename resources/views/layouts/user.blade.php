@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Benur-Q | Platform Pemesanan Benur</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="font-sans antialiased bg-gray-50 text-gray-900 pb-20 md:pb-0 selection:bg-[#1A6B3C] selection:text-white">
+
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            
+            <a href="{{ route('user.catalog') }}" class="flex items-center space-x-2">
+                <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C]"></i>
+                <span class="text-xl font-extrabold text-gray-900 tracking-tight">BENUR-Q</span>
+            </a>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="{{ route('user.catalog') }}" class="flex items-center space-x-1.5 transition-colors {{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'text-[#1A6B3C] font-semibold' : 'text-gray-500 hover:text-gray-900' }}">
+                    <i class="ph {{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'ph-storefront-fill' : 'ph-storefront' }} text-lg"></i>
+                    <span>Katalog Benur</span>
+                </a>
+                <a href="{{ route('user.dashboard') }}" class="flex items-center space-x-1.5 transition-colors {{ request()->routeIs('user.dashboard') ? 'text-[#1A6B3C] font-semibold' : 'text-gray-500 hover:text-gray-900' }}">
+                    <i class="ph {{ request()->routeIs('user.dashboard') ? 'ph-trend-up-fill' : 'ph-trend-up' }} text-lg"></i>
+                    <span>Tren Harga</span>
+                </a>
+                <a href="{{ route('user.orders.index') }}" class="flex items-center space-x-1.5 transition-colors {{ request()->routeIs('user.orders.*') ? 'text-[#1A6B3C] font-semibold' : 'text-gray-500 hover:text-gray-900' }}">
+                    <i class="ph {{ request()->routeIs('user.orders.*') ? 'ph-receipt-fill' : 'ph-receipt' }} text-lg"></i>
+                    <span>Pesanan Saya</span>
+                </a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-2 border-r border-gray-200 pr-4">
+                    <div class="w-8 h-8 rounded-full bg-green-50 text-[#1A6B3C] flex items-center justify-center font-bold text-sm border border-green-100">
+                        {{ substr(Auth::user()->name, 0, 1) }}
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-semibold text-gray-700 leading-tight">{{ Auth::user()->name }}</span>
+                        <span class="text-[10px] text-gray-400 font-medium uppercase">Pelanggan</span>
+                    </div>
+                </div>
+                
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors flex items-center" title="Keluar">
+                        <i class="ph ph-sign-out text-xl"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        @yield('content')
+    </main>
+
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50">
+        <a href="{{ route('user.catalog') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="ph {{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'ph-storefront-fill' : 'ph-storefront' }} text-2xl"></i>
+            <span class="text-[10px] font-semibold">Katalog</span>
+        </a>
+        
+        <a href="{{ route('user.dashboard') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.dashboard') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="ph {{ request()->routeIs('user.dashboard') ? 'ph-trend-up-fill' : 'ph-trend-up' }} text-2xl"></i>
+            <span class="text-[10px] font-semibold">Tren Harga</span>
+        </a>
+        
+        <a href="{{ route('user.orders.index') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.orders.*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="ph {{ request()->routeIs('user.orders.*') ? 'ph-receipt-fill' : 'ph-receipt' }} text-2xl"></i>
+            <span class="text-[10px] font-semibold">Pesanan</span>
+            
+            </a>
+    </div>
+
+</body>
+</html>
