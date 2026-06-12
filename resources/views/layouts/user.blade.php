@@ -7,6 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    @stack('styles')
 </head>
 <body class="font-sans antialiased bg-gray-50 text-gray-900 pb-20 md:pb-0 selection:bg-[#1A6B3C] selection:text-white">
 
@@ -76,5 +77,6 @@
             </a>
     </div>
 
+    @stack('scripts')
 </body>
 </html>

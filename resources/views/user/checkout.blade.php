@@ -27,7 +27,7 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Jadwal Pengiriman <span class="text-red-500">*</span></label>
-                    <input type="date" name="delivery_date" id="delivery_date" value="{{ old('delivery_date') }}" required class="w-full border-gray-300 rounded-md focus:ring-[#1A6B3C] focus:border-[#1A6B3C]">
+                    <input type="text" name="delivery_date" id="delivery_date" value="{{ old('delivery_date') }}" placeholder="Pilih tanggal..." required class="w-full border-gray-300 rounded-md focus:ring-[#1A6B3C] focus:border-[#1A6B3C]">
                     <p class="text-xs text-gray-500 mt-1">Kami hanya melayani pengiriman pada hari <span class="font-bold text-[#1A6B3C]">Senin</span> dan <span class="font-bold text-[#1A6B3C]">Kamis</span>.</p>
                     @error('delivery_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
@@ -90,6 +90,12 @@
     </div>
 </form>
 
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const pricePerUnit = Number("{{ $product->price }}");
@@ -106,22 +112,17 @@
             totalPriceEl.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
         });
 
-        const dateInput = document.getElementById('delivery_date');
-
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
-
-        dateInput.addEventListener('input', function(e) {
-            if (this.value === "") return;
-            const parts = this.value.split('-');
-            const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
-            const day = selectedDate.getDay();
-
-            if (day !== 1 && day !== 4) {
-                alert('Pilihan tidak valid! Pengiriman hanya dilakukan pada hari Senin dan Kamis.');
-                this.value = '';
-            }
+        flatpickr("#delivery_date", {
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            disable: [
+                function(date) {
+                    // Disable semua hari kecuali Senin (1) dan Kamis (4)
+                    return (date.getDay() !== 1 && date.getDay() !== 4);
+                }
+            ]
         });
     });
 </script>
+@endpush
 @endsection
