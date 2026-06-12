@@ -112,10 +112,12 @@
         dateInput.setAttribute('min', today);
 
         dateInput.addEventListener('input', function(e) {
-            const selectedDate = new Date(this.value);
+            if (this.value === "") return;
+            const parts = this.value.split('-');
+            const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
             const day = selectedDate.getDay();
 
-            if (this.value !== "" && day !== 1 && day !== 4) {
+            if (day !== 1 && day !== 4) {
                 alert('Pilihan tidak valid! Pengiriman hanya dilakukan pada hari Senin dan Kamis.');
                 this.value = '';
             }
