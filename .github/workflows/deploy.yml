@@ -1,0 +1,61 @@
+name: Deploy Web Penjualan Benur
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Checkout Kode Terbaru
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3.30'
+
+      - name: 📦 Install Composer
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader
+
+      - name: 🛠️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Install NPM & Build Assets (Vite)
+        run: |
+          npm install
+          npm run build
+
+      - name: 🧹 Hapus Node Modules (Menghemat waktu upload)
+        run: rm -rf node_modules
+
+      - name: 🔄 Modifikasi index.php Otomatis
+        run: |
+          sed -i "s|__DIR__.'/../vendor/autoload.php'|__DIR__.'/../laravel_core/vendor/autoload.php'|g" public/index.php
+          sed -i "s|__DIR__.'/../bootstrap/app.php'|__DIR__.'/../laravel_core/bootstrap/app.php'|g" public/index.php
+
+      - name: 📂 Upload Sistem ke folder laravel_core
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /domains/sentra-benur.store/laravel_core/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/public/**
+            .env
+            
+      - name: 📂 Upload File Publik ke public_html
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./public/
+          server-dir: /domains/sentra-benur.store/public_html/
