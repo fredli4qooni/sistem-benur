@@ -80,15 +80,14 @@ jobs:
           ?>
           EOF
 
-      - name: 📂 Upload ZIP via FTP
-        uses: appleboy/ftp-action@master
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          local_dir: "./to_upload/"
-          remote_dir: "/domains/sentra-benur.store/"
+      - name: 📂 Upload ZIP & Script via FTP (cURL)
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          curl --ftp-pasv -T to_upload/release.zip ftp://$FTP_SERVER/domains/sentra-benur.store/release.zip --user "$FTP_USERNAME:$FTP_PASSWORD"
+          curl --ftp-pasv -T to_upload/public_html/unzip.php ftp://$FTP_SERVER/domains/sentra-benur.store/public_html/unzip.php --user "$FTP_USERNAME:$FTP_PASSWORD"
 
       - name: 🚀 Ekstrak Otomatis di Server
         run: curl -s https://sentra-benur.store/unzip.php
