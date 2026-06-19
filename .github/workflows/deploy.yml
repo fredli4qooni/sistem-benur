@@ -37,29 +37,23 @@ jobs:
 
       - name: 🗂️ Packing & Zipping (Anti-Reset FTP)
         run: |
-          # 1. Buat folder staging sementara
           mkdir -p staging/laravel_core
           mkdir -p staging/public_html
           
-          # 2. Pisahkan folder public (aset web)
           mv public/* staging/public_html/
           mv public/.htaccess staging/public_html/
           rm -rf public
           
-          # 3. Pindahkan semua file sisanya (core Laravel) ke laravel_core
           shopt -s extglob
           mv !(staging|.git|.github) staging/laravel_core/
           
-          # 4. Kompres jadi satu file ZIP
           cd staging
           zip -qq -r release.zip laravel_core public_html
           cd ..
           
-          # 5. Siapkan folder khusus untuk diupload ke server
           mkdir -p to_upload/public_html
           mv staging/release.zip to_upload/
           
-          # 6. Buat script eksekutor PHP (unzip.php)
           cat << 'EOF' > to_upload/public_html/unzip.php
           <?php
           $zipFile = __DIR__ . '/../release.zip';
@@ -68,8 +62,8 @@ jobs:
               if ($zip->open($zipFile) === TRUE) {
                   $zip->extractTo(__DIR__ . '/../');
                   $zip->close();
-                  unlink($zipFile); // Hapus zip setelah selesai
-                  unlink(__FILE__); // Hapus script ini demi keamanan
+                  unlink($zipFile); // Bersihkan zip
+                  unlink(__FILE__); // Bersihkan script
                   echo "SUCCESS: Auto-Deploy Berhasil!";
               } else {
                   echo "ERROR: Gagal ekstrak file ZIP.";
@@ -80,14 +74,14 @@ jobs:
           ?>
           EOF
 
-      - name: 📂 Upload ZIP & Script via FTP (cURL)
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        run: |
-          curl --ftp-pasv -T to_upload/release.zip ftp://$FTP_SERVER/domains/sentra-benur.store/release.zip --user "$FTP_USERNAME:$FTP_PASSWORD"
-          curl --ftp-pasv -T to_upload/public_html/unzip.php ftp://$FTP_SERVER/domains/sentra-benur.store/public_html/unzip.php --user "$FTP_USERNAME:$FTP_PASSWORD"
+      - name: 📂 Upload ZIP via SamKirkland
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./to_upload/
+          server-dir: /domains/sentra-benur.store/
 
       - name: 🚀 Ekstrak Otomatis di Server
         run: curl -s https://sentra-benur.store/unzip.php
