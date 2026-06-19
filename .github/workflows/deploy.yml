@@ -1,9 +1,9 @@
-name: Deploy Web Penjualan Benur
+name: Deploy Web Penjualan Benur (ZIP Method)
 
 on:
   push:
     branches:
-      - main
+      - main # Sesuaikan jika branch utama Anda master
 
 jobs:
   deploy:
@@ -15,7 +15,7 @@ jobs:
       - name: 🛠️ Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3.30'
+          php-version: '8.2'
 
       - name: 📦 Install Composer
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader
@@ -30,32 +30,65 @@ jobs:
           npm install
           npm run build
 
-      - name: 🧹 Hapus Node Modules (Menghemat waktu upload)
-        run: rm -rf node_modules
-
-      - name: 🔄 Modifikasi index.php Otomatis
+      - name: 🔄 Ubah Path index.php Otomatis
         run: |
           sed -i "s|__DIR__.'/../vendor/autoload.php'|__DIR__.'/../laravel_core/vendor/autoload.php'|g" public/index.php
           sed -i "s|__DIR__.'/../bootstrap/app.php'|__DIR__.'/../laravel_core/bootstrap/app.php'|g" public/index.php
 
-      - name: 📂 Upload Sistem ke folder laravel_core
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: 🗂️ Packing & Zipping (Anti-Reset FTP)
+        run: |
+          # 1. Buat folder staging sementara
+          mkdir -p staging/laravel_core
+          mkdir -p staging/public_html
+          
+          # 2. Pisahkan folder public (aset web)
+          mv public/* staging/public_html/
+          mv public/.htaccess staging/public_html/
+          rm -rf public
+          
+          # 3. Pindahkan semua file sisanya (core Laravel) ke laravel_core
+          shopt -s extglob
+          mv !(staging|.git|.github) staging/laravel_core/
+          
+          # 4. Kompres jadi satu file ZIP
+          cd staging
+          zip -qq -r release.zip laravel_core public_html
+          cd ..
+          
+          # 5. Siapkan folder khusus untuk diupload ke server
+          mkdir -p to_upload/public_html
+          mv staging/release.zip to_upload/
+          
+          # 6. Buat script eksekutor PHP (unzip.php)
+          cat << 'EOF' > to_upload/public_html/unzip.php
+          <?php
+          $zipFile = __DIR__ . '/../release.zip';
+          if (file_exists($zipFile)) {
+              $zip = new ZipArchive;
+              if ($zip->open($zipFile) === TRUE) {
+                  $zip->extractTo(__DIR__ . '/../');
+                  $zip->close();
+                  unlink($zipFile); // Hapus zip setelah selesai
+                  unlink(__FILE__); // Hapus script ini demi keamanan
+                  echo "SUCCESS: Auto-Deploy Berhasil!";
+              } else {
+                  echo "ERROR: Gagal ekstrak file ZIP.";
+              }
+          } else {
+              echo "ERROR: File release.zip tidak ditemukan di server.";
+          }
+          ?>
+          EOF
+
+      - name: 📂 Upload ZIP via FTP
+        uses: appleboy/ftp-action@master
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /domains/sentra-benur.store/laravel_core/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/public/**
-            .env
-            
-      - name: 📂 Upload File Publik ke public_html
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./public/
-          server-dir: /domains/sentra-benur.store/public_html/
+          port: 21
+          local_dir: "./to_upload/"
+          remote_dir: "/domains/sentra-benur.store/"
+
+      - name: 🚀 Ekstrak Otomatis di Server
+        run: curl -s https://sentra-benur.store/unzip.php
