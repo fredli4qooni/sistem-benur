@@ -41,8 +41,11 @@
             </div>
 
             <div class="p-3 sm:p-5 flex flex-col flex-1">
-                <div class="flex justify-between items-start mb-1 sm:mb-2">
+                <div class="mb-1 sm:mb-2">
                     <h2 class="text-sm sm:text-lg font-bold text-gray-900 line-clamp-2 leading-snug group-hover:text-[#1A6B3C] transition-colors">{{ $product->name }}</h2>
+                    @if($product->description)
+                        <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ $product->description }}</p>
+                    @endif
                 </div>
 
                 <div class="mt-auto pt-2 sm:pt-4 border-t border-gray-50">
