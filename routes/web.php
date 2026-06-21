@@ -101,10 +101,15 @@ Route::get('/sys-cmd/{command}/{secret}', function ($command, $secret) {
             return response()->json(['status' => 'error', 'message' => 'Command not allowed']);
         }
 
-        \Illuminate\Support\Facades\Artisan::call($command);
+        if (str_starts_with($command, 'migrate')) {
+            \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        } else {
+            \Illuminate\Support\Facades\Artisan::call($command);
+        }
+        
         return response()->json([
             'status' => 'success',
-            'command' => 'php artisan ' . $command,
+            'command' => 'php artisan ' . $command . (str_starts_with($command, 'migrate') ? ' --force' : ''),
             'output' => \Illuminate\Support\Facades\Artisan::output()
         ]);
     } catch (\Exception $e) {
