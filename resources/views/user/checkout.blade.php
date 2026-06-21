@@ -102,11 +102,20 @@
         const totalPriceEl = document.getElementById('total_price');
 
         quantityInput.addEventListener('input', function() {
-            let qty = this.value;
-            if (qty < 1) {
-                qty = 1;
+            let qty = parseInt(this.value);
+            if (isNaN(qty) || qty < 0) qty = 0;
+            
+            const total = qty * pricePerUnit;
+            totalPriceEl.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
+        });
+
+        quantityInput.addEventListener('blur', function() {
+            let qty = parseInt(this.value);
+            if (isNaN(qty) || qty < 1) {
                 this.value = 1;
+                qty = 1;
             }
+            
             const total = qty * pricePerUnit;
             totalPriceEl.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
         });
