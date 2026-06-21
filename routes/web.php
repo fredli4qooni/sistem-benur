@@ -61,7 +61,6 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::post('/checkout/{product}', [OrderController::class, 'store'])->name('checkout.store');
 
         Route::get('/payment/{order}', [PaymentController::class, 'show'])->name('payment');
-        Route::post('/payment/{order}', [PaymentController::class, 'uploadProof'])->name('payment.upload');
 
         Route::get('/pesanan', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/pesanan/{order}', [OrderController::class, 'show'])->name('orders.show');
@@ -73,6 +72,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::post('/api/midtrans/callback', [\App\Http\Controllers\MidtransCallbackController::class, 'callback']);
 
 require __DIR__ . '/auth.php';
 

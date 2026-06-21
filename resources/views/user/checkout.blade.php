@@ -42,14 +42,13 @@
         <div class="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-100">
             <h2 class="text-base md:text-lg font-bold text-gray-800 border-b pb-2 md:pb-3 mb-3 md:mb-4">Metode Pembayaran</h2>
             <div class="space-y-3">
-                <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input type="radio" name="payment_method" value="qris" required class="text-[#1A6B3C] focus:ring-[#1A6B3C]" {{ old('payment_method') == 'qris' ? 'checked' : '' }}>
-                    <span class="ml-3 font-medium">QRIS (Otomatis / Upload Bukti)</span>
-                </label>
-                <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input type="radio" name="payment_method" value="transfer" class="text-[#1A6B3C] focus:ring-[#1A6B3C]" {{ old('payment_method') == 'transfer' ? 'checked' : '' }}>
-                    <span class="ml-3 font-medium">Transfer Bank Manual</span>
-                </label>
+                <div class="flex items-center p-3 border border-green-200 bg-green-50 rounded-lg">
+                    <i class="ph-fill ph-shield-check text-green-600 text-2xl"></i>
+                    <div class="ml-3">
+                        <span class="block font-bold text-gray-800">Midtrans Secure Payment</span>
+                        <span class="block text-xs text-gray-500 mt-0.5">Mendukung QRIS, Virtual Account, E-Wallet, dan lainnya.</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

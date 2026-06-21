@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class OrderController extends Controller
 {
@@ -51,7 +53,6 @@ class OrderController extends Controller
             'quantity' => 'required|integer|min:1|max:' . $product->stock,
             'delivery_date' => 'required|date|after_or_equal:today',
             'delivery_address' => 'required|string',
-            'payment_method' => 'required|in:qris,transfer',
             'notes' => 'nullable|string'
         ]);
 
@@ -83,19 +84,52 @@ class OrderController extends Controller
                 'subtotal' => $totalAmount,
             ]);
 
-            Transaction::create([
+            $transaction = Transaction::create([
                 'order_id' => $order->id,
                 'amount' => $totalAmount,
-                'method' => $request->payment_method,
+                'method' => 'midtrans',
                 'status' => 'menunggu',
             ]);
+
+            // Set konfigurasi Midtrans
+            Config::$serverKey = config('midtrans.server_key');
+            Config::$isProduction = config('midtrans.is_production');
+            Config::$isSanitized = config('midtrans.is_sanitized');
+            Config::$is3ds = config('midtrans.is_3ds');
+
+            // Persiapkan parameter untuk dikirim ke Midtrans
+            $params = [
+                'transaction_details' => [
+                    'order_id' => $order->order_number,
+                    'gross_amount' => $totalAmount,
+                ],
+                'customer_details' => [
+                    'first_name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                    'phone' => Auth::user()->phone ?? '',
+                ],
+                'item_details' => [
+                    [
+                        'id' => $product->id,
+                        'price' => $product->price,
+                        'quantity' => $request->quantity,
+                        'name' => $product->name,
+                    ]
+                ]
+            ];
+
+            // Dapatkan Snap Token dari Midtrans
+            $snapToken = Snap::getSnapToken($params);
+
+            // Simpan snap token ke dalam transaksi
+            $transaction->update(['snap_token' => $snapToken]);
 
             DB::commit();
 
             return redirect()->route('user.payment', $order->id)->with('success', 'Pesanan berhasil dibuat! Silakan selesaikan pembayaran.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan sistem. Silakan coba lagi.')->withInput();
+            return back()->with('error', 'Terjadi kesalahan sistem: ' . $e->getMessage())->withInput();
         }
     }
 }
