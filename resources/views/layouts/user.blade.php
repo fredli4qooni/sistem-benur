@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Benur-Q | Platform Pemesanan Benur</title>
+    <title>SENTRA BENUR | Platform Pemesanan Benur</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -16,7 +16,7 @@
             
             <a href="{{ route('user.catalog') }}" class="flex items-center space-x-2">
                 <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C]"></i>
-                <span class="text-xl font-extrabold text-gray-900 tracking-tight">BENUR-Q</span>
+                <span class="text-xl font-extrabold text-gray-900 tracking-tight">SENTRA BENUR</span>
             </a>
 
             <div class="hidden md:flex items-center space-x-8">

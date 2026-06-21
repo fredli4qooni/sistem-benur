@@ -79,7 +79,7 @@
     </form>
     
     <div class="text-center mt-8">
-        <p class="text-xs text-gray-400">Benur-Q v1.0.0</p>
+        <p class="text-xs text-gray-400">SENTRA BENUR v1.0.0</p>
     </div>
 </div>
 @endsection

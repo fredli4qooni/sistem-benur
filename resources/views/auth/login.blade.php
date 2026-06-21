@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Masuk - Benur-Q</title>
+    <title>Masuk - SENTRA BENUR</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
@@ -13,7 +13,7 @@
         <div class="text-center mb-8">
             <a href="/" class="inline-flex items-center space-x-2">
                 <i class="ph-fill ph-shrimp text-3xl text-[#1A6B3C]"></i>
-                <span class="text-2xl font-extrabold text-gray-900 tracking-tight">BENUR-Q</span>
+                <span class="text-2xl font-extrabold text-gray-900 tracking-tight">SENTRA BENUR</span>
             </a>
             <p class="text-gray-500 text-sm mt-2">Masuk untuk mengelola tambak dan pesanan Anda</p>
         </div>

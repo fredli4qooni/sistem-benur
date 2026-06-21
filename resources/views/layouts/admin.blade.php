@@ -16,7 +16,7 @@
     <aside id="admin-sidebar" class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 z-50 transition-transform duration-300 ease-in-out">
         <div class="h-16 flex items-center px-6 border-b border-gray-100">
             <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C] mr-2"></i>
-            <span class="text-xl font-extrabold text-gray-900 tracking-tight">BENUR-Q <span class="text-[#1A6B3C] text-sm">PRO</span></span>
+            <span class="text-xl font-extrabold text-gray-900 tracking-tight">SENTRA BENUR <span class="text-[#1A6B3C] text-sm">PRO</span></span>
         </div>
 
         <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
@@ -85,7 +85,7 @@
                 <!-- Branding untuk Mobile -->
                 <div class="md:hidden flex items-center mr-4">
                     <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C] mr-2"></i>
-                    <span class="text-lg font-extrabold text-gray-900 tracking-tight">BENUR-Q</span>
+                    <span class="text-lg font-extrabold text-gray-900 tracking-tight">SENTRA BENUR</span>
                 </div>
 
                 <div class="hidden sm:flex items-center text-sm text-gray-500">

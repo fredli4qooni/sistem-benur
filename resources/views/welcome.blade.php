@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Benur-Q | Platform Distribusi Benur Terpercaya</title>
+    <title>SENTRA BENUR | Platform Distribusi Benur Terpercaya</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -17,7 +17,7 @@
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center space-x-2">
                     <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C]"></i>
-                    <span class="text-xl font-extrabold text-gray-900 tracking-tight">BENUR-Q</span>
+                    <span class="text-xl font-extrabold text-gray-900 tracking-tight">SENTRA BENUR</span>
                 </div>
                 <div class="flex items-center space-x-4">
                     @if (Route::has('login'))
@@ -216,7 +216,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0 flex items-center space-x-2">
                     <i class="ph-fill ph-shrimp text-2xl text-gray-400"></i>
-                    <span class="text-lg font-extrabold text-gray-900 tracking-tight">BENUR-Q</span>
+                    <span class="text-lg font-extrabold text-gray-900 tracking-tight">SENTRA BENUR</span>
                 </div>
                 <div class="text-sm text-gray-500 font-medium text-center md:text-right">
                     <p>&copy; {{ date('Y') }} PT Benur Digital Indonesia. Hak Cipta Dilindungi.</p>
