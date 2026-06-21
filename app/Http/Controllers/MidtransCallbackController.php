@@ -36,15 +36,34 @@ class MidtransCallbackController extends Controller
             if ($fraudStatus == 'challenge') {
                 $transaction->update(['status' => 'menunggu']);
             } else if ($fraudStatus == 'accept') {
-                $transaction->update(['status' => 'berhasil']);
-                $order->update(['status' => 'diproses']);
+                $transaction->update(['status' => 'terkonfirmasi', 'confirmed_at' => now()]);
+                $order->update(['status' => 'dikonfirmasi']);
+                
+                // Potong stok karena sudah dibayar
+                foreach ($order->items as $item) {
+                    $product = $item->product;
+                    if ($product) {
+                        $product->decrement('stock', $item->quantity);
+                    }
+                }
             }
         } else if ($transactionStatus == 'settlement') {
-            $transaction->update(['status' => 'berhasil']);
-            $order->update(['status' => 'diproses']);
+            $transaction->update(['status' => 'terkonfirmasi', 'confirmed_at' => now()]);
+            $order->update(['status' => 'dikonfirmasi']);
+            
+            // Potong stok karena sudah dibayar
+            foreach ($order->items as $item) {
+                $product = $item->product;
+                if ($product) {
+                    $product->decrement('stock', $item->quantity);
+                }
+            }
         } else if ($transactionStatus == 'cancel' || $transactionStatus == 'deny' || $transactionStatus == 'expire') {
             $transaction->update(['status' => 'gagal']);
             $order->update(['status' => 'dibatalkan']);
+            
+            // Note: If expire, return stock is NOT needed if we haven't deducted it. 
+            // We only deduct on 'capture' or 'settlement' above.
         } else if ($transactionStatus == 'pending') {
             $transaction->update(['status' => 'menunggu']);
         }
