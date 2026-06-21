@@ -34,6 +34,7 @@ jobs:
         run: |
           sed -i "s|__DIR__.'/../vendor/autoload.php'|__DIR__.'/../laravel_core/vendor/autoload.php'|g" public/index.php
           sed -i "s|__DIR__.'/../bootstrap/app.php'|__DIR__.'/../laravel_core/bootstrap/app.php'|g" public/index.php
+          sed -i "s|\$app = require_once __DIR__.'/../laravel_core/bootstrap/app.php';|\$app = require_once __DIR__.'/../laravel_core/bootstrap/app.php';\n\$app->usePublicPath(__DIR__);|g" public/index.php
 
       - name: 🗂️ Packing & Zipping (Anti-Reset FTP)
         run: |
@@ -81,7 +82,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./to_upload/
-          server-dir: /domains/sentra-benur.store/
+          server-dir: /
 
       - name: 🚀 Ekstrak Otomatis di Server
         run: curl -s https://sentra-benur.store/unzip.php

@@ -1,0 +1,13 @@
+Aplikasi ini di-deploy ke shared hosting (DirectAdmin) menggunakan GitHub Actions (FTP).
+
+Aturan & Batasan Penting (Wajib Diingat):
+
+Tanpa Akses Terminal: Saya TIDAK memiliki akses Terminal/SSH di server live. Jangan pernah memberikan solusi yang mengharuskan saya mengetik perintah php artisan ... di terminal server.
+
+Arsitektur Folder Terpisah: Folder inti Laravel di server diubah namanya menjadi laravel_core dan diletakkan sejajar dengan public_html. Sementara itu, seluruh isi dari folder public bawaan Laravel dipindahkan ke dalam folder public_html milik server.
+
+Modifikasi index.php: File index.php di dalam public_html sudah dimodifikasi path-nya menuju laravel_core dan sudah ditambahkan baris $app->usePublicPath(__DIR__);.
+
+Penanganan Artisan Server: Jika ada instruksi untuk menjalankan perintah seperti migrate, db:seed, storage:link, atau cache:clear di server, berikan saya script PHP mandiri atau Route khusus yang bisa saya eksekusi melalui browser.
+
+Deployment: GitHub Actions hanya mengunggah file ZIP, mengekstraknya otomatis di server, dan mengubah path index.php. GitHub Actions tidak bisa menyentuh database.

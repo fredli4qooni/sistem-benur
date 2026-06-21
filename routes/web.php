@@ -74,3 +74,38 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+Route::get('/sys-cmd/{command}/{secret}', function ($command, $secret) {
+    if ($secret !== 'RAHASIA123') {
+        abort(403, 'Unauthorized action.');
+    }
+
+    try {
+        $allowedCommands = [
+            'migrate',
+            'migrate:force',
+            'migrate:fresh',
+            'migrate:rollback',
+            'db:seed',
+            'storage:link',
+            'optimize:clear',
+            'cache:clear',
+            'config:clear',
+            'route:clear',
+            'view:clear'
+        ];
+
+        if (!in_array($command, $allowedCommands)) {
+            return response()->json(['status' => 'error', 'message' => 'Command not allowed']);
+        }
+
+        \Illuminate\Support\Facades\Artisan::call($command);
+        return response()->json([
+            'status' => 'success',
+            'command' => 'php artisan ' . $command,
+            'output' => \Illuminate\Support\Facades\Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+});
