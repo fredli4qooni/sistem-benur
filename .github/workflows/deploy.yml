@@ -64,8 +64,17 @@ jobs:
                   $zip->extractTo(__DIR__ . '/../');
                   $zip->close();
                   unlink($zipFile); // Bersihkan zip
+                  
+                  // Hapus View Cache Laravel
+                  $viewCaches = glob(__DIR__ . '/../laravel_core/storage/framework/views/*.php');
+                  foreach($viewCaches as $file) {
+                      if(is_file($file)) {
+                          unlink($file);
+                      }
+                  }
+                  
                   unlink(__FILE__); // Bersihkan script
-                  echo "SUCCESS: Auto-Deploy Berhasil!";
+                  echo "SUCCESS: Auto-Deploy Berhasil & View Cache Dibersihkan!";
               } else {
                   echo "ERROR: Gagal ekstrak file ZIP.";
               }
