@@ -36,7 +36,7 @@
     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <h2 class="text-lg font-bold text-gray-800 border-b pb-3 mb-4">Informasi Pembayaran</h2>
         <div class="space-y-4">
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Bank (Cth: BCA)</label>
                     <input type="text" name="bank_name" value="{{ $settings['bank_name'] ?? '' }}" required class="w-full border-gray-300 rounded focus:ring-[#1A6B3C] focus:border-[#1A6B3C]">

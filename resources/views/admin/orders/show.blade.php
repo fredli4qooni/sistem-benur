@@ -22,7 +22,7 @@
     <div class="lg:col-span-2 space-y-6">
         <div class="bg-white rounded-lg shadow-sm p-6 border">
             <h2 class="text-lg font-bold text-gray-800 border-b pb-3 mb-4">Informasi Pengiriman & Pelanggan</h2>
-            <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
                 <div>
                     <p class="text-xs text-gray-400 uppercase">Nama Pembudidaya</p>
                     <p class="font-semibold text-gray-800 mt-0.5">{{ $order->user->name }}</p>
@@ -48,26 +48,28 @@
 
         <div class="bg-white rounded-lg shadow-sm p-6 border">
             <h2 class="text-lg font-bold text-gray-800 border-b pb-3 mb-4">Item yang Dipesan</h2>
-            <table class="w-full text-left text-sm">
-                <thead>
-                    <tr class="text-gray-400 border-b text-xs uppercase">
-                        <th class="pb-2">Nama Produk</th>
-                        <th class="pb-2 text-center">Jumlah</th>
-                        <th class="pb-2 text-right">Harga Satuan</th>
-                        <th class="pb-2 text-right">Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y text-gray-700">
-                    @foreach($order->items as $item)
-                    <tr>
-                        <td class="py-3 font-medium text-gray-900">{{ $item->product->name }}</td>
-                        <td class="py-3 text-center">{{ $item->quantity }} {{ $item->product->unit }}</td>
-                        <td class="py-3 text-right">Rp {{ number_format($item->unit_price, 0, ',', '.') }}</td>
-                        <td class="py-3 text-right font-bold text-[#1A6B3C]">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead>
+                        <tr class="text-gray-400 border-b text-xs uppercase">
+                            <th class="pb-2 pr-4">Nama Produk</th>
+                            <th class="pb-2 px-4 text-center">Jumlah</th>
+                            <th class="pb-2 px-4 text-right">Harga Satuan</th>
+                            <th class="pb-2 pl-4 text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y text-gray-700">
+                        @foreach($order->items as $item)
+                        <tr>
+                            <td class="py-3 pr-4 font-medium text-gray-900">{{ $item->product->name }}</td>
+                            <td class="py-3 px-4 text-center">{{ $item->quantity }} {{ $item->product->unit }}</td>
+                            <td class="py-3 px-4 text-right">Rp {{ number_format($item->unit_price, 0, ',', '.') }}</td>
+                            <td class="py-3 pl-4 text-right font-bold text-[#1A6B3C]">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

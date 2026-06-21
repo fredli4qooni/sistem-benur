@@ -71,4 +71,9 @@ class DashboardController extends Controller
             'chartTotals'
         ));
     }
+
+    public function menu()
+    {
+        return view('admin.menu');
+    }
 }

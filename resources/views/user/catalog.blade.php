@@ -19,11 +19,11 @@
 </div>
 @endif
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
     @forelse($products as $product)
         <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200 flex flex-col overflow-hidden group">
             
-            <div class="relative h-48 bg-gray-50 border-b border-gray-100 flex-shrink-0 overflow-hidden">
+            <div class="relative h-32 sm:h-48 bg-gray-50 border-b border-gray-100 flex-shrink-0 overflow-hidden">
                 @if($product->image)
                     <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="{{ $product->name }}">
                 @else
@@ -34,42 +34,42 @@
                 @endif
 
                 @if($product->category)
-                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-gray-700 text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm border border-gray-200 uppercase tracking-wider">
+                    <span class="absolute top-2 left-2 sm:top-3 sm:left-3 bg-white/90 backdrop-blur-sm text-gray-700 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md shadow-sm border border-gray-200 uppercase tracking-wider">
                         {{ $product->category }}
                     </span>
                 @endif
             </div>
 
-            <div class="p-5 flex flex-col flex-1">
-                <div class="flex justify-between items-start mb-2">
-                    <h2 class="text-lg font-bold text-gray-900 line-clamp-2 leading-snug group-hover:text-[#1A6B3C] transition-colors">{{ $product->name }}</h2>
+            <div class="p-3 sm:p-5 flex flex-col flex-1">
+                <div class="flex justify-between items-start mb-1 sm:mb-2">
+                    <h2 class="text-sm sm:text-lg font-bold text-gray-900 line-clamp-2 leading-snug group-hover:text-[#1A6B3C] transition-colors">{{ $product->name }}</h2>
                 </div>
 
-                <div class="mt-auto pt-4 border-t border-gray-50">
-                    <p class="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Harga per {{ $product->unit }}</p>
-                    <p class="text-xl font-extrabold text-[#1A6B3C] tracking-tight">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                <div class="mt-auto pt-2 sm:pt-4 border-t border-gray-50">
+                    <p class="text-[9px] sm:text-xs text-gray-400 font-medium mb-0.5 sm:mb-1 uppercase tracking-wider">Harga per {{ $product->unit }}</p>
+                    <p class="text-sm sm:text-xl font-extrabold text-[#1A6B3C] tracking-tight">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                 </div>
 
-                <div class="mt-3 flex items-center text-xs font-medium">
+                <div class="mt-2 sm:mt-3 flex items-center text-[10px] sm:text-xs font-medium">
                     @if($product->stock > 0)
-                        <i class="ph-fill ph-check-circle text-green-500 mr-1.5 text-sm"></i>
-                        <span class="text-gray-600">Sisa stok: <span class="text-gray-900 font-bold">{{ $product->stock }}</span> {{ $product->unit }}</span>
+                        <i class="ph-fill ph-check-circle text-green-500 mr-1 sm:mr-1.5 text-xs sm:text-sm"></i>
+                        <span class="text-gray-600 line-clamp-1">Sisa stok: <span class="text-gray-900 font-bold">{{ $product->stock }}</span> {{ $product->unit }}</span>
                     @else
-                        <i class="ph-fill ph-x-circle text-red-500 mr-1.5 text-sm"></i>
-                        <span class="text-red-600 font-bold">Stok Habis</span>
+                        <i class="ph-fill ph-x-circle text-red-500 mr-1 sm:mr-1.5 text-xs sm:text-sm"></i>
+                        <span class="text-red-600 font-bold line-clamp-1">Stok Habis</span>
                     @endif
                 </div>
 
-                <div class="mt-5">
+                <div class="mt-3 sm:mt-5">
                     @if($product->stock > 0)
-                        <a href="{{ route('user.checkout', $product->id) }}" class="w-full flex items-center justify-center bg-white border-2 border-[#1A6B3C] text-[#1A6B3C] font-bold py-2.5 rounded-lg hover:bg-[#1A6B3C] hover:text-white transition-colors duration-200 text-sm">
-                            <i class="ph ph-shopping-cart text-lg mr-2"></i>
-                            Pesan Sekarang
+                        <a href="{{ route('user.checkout', $product->id) }}" class="w-full flex items-center justify-center bg-white border border-[#1A6B3C] sm:border-2 text-[#1A6B3C] font-bold py-1.5 sm:py-2.5 rounded-md sm:rounded-lg hover:bg-[#1A6B3C] hover:text-white transition-colors duration-200 text-[11px] sm:text-sm">
+                            <i class="ph ph-shopping-cart text-sm sm:text-lg mr-1.5 sm:mr-2"></i>
+                            Pesan
                         </a>
                     @else
-                        <button disabled class="w-full flex items-center justify-center bg-gray-50 border-2 border-gray-100 text-gray-400 font-bold py-2.5 rounded-lg cursor-not-allowed text-sm">
-                            <i class="ph ph-prohibit text-lg mr-2"></i>
-                            Tidak Tersedia
+                        <button disabled class="w-full flex items-center justify-center bg-gray-50 border border-gray-100 sm:border-2 text-gray-400 font-bold py-1.5 sm:py-2.5 rounded-md sm:rounded-lg cursor-not-allowed text-[11px] sm:text-sm">
+                            <i class="ph ph-prohibit text-sm sm:text-lg mr-1.5 sm:mr-2"></i>
+                            Habis
                         </button>
                     @endif
                 </div>

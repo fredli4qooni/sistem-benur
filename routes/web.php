@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
     ->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/menu', [DashboardController::class, 'menu'])->name('menu');
 
         Route::resource('products', ProductController::class);
 

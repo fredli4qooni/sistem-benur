@@ -21,15 +21,15 @@
 
             <div class="hidden md:flex items-center space-x-8">
                 <a href="{{ route('user.catalog') }}" class="flex items-center space-x-1.5 transition-colors {{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'text-[#1A6B3C] font-semibold' : 'text-gray-500 hover:text-gray-900' }}">
-                    <i class="ph {{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'ph-storefront-fill' : 'ph-storefront' }} text-lg"></i>
+                    <i class="{{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'ph-fill' : 'ph' }} ph-storefront text-lg"></i>
                     <span>Katalog Benur</span>
                 </a>
                 <a href="{{ route('user.dashboard') }}" class="flex items-center space-x-1.5 transition-colors {{ request()->routeIs('user.dashboard') ? 'text-[#1A6B3C] font-semibold' : 'text-gray-500 hover:text-gray-900' }}">
-                    <i class="ph {{ request()->routeIs('user.dashboard') ? 'ph-trend-up-fill' : 'ph-trend-up' }} text-lg"></i>
+                    <i class="{{ request()->routeIs('user.dashboard') ? 'ph-fill' : 'ph' }} ph-trend-up text-lg"></i>
                     <span>Tren Harga</span>
                 </a>
                 <a href="{{ route('user.orders.index') }}" class="flex items-center space-x-1.5 transition-colors {{ request()->routeIs('user.orders.*') ? 'text-[#1A6B3C] font-semibold' : 'text-gray-500 hover:text-gray-900' }}">
-                    <i class="ph {{ request()->routeIs('user.orders.*') ? 'ph-receipt-fill' : 'ph-receipt' }} text-lg"></i>
+                    <i class="{{ request()->routeIs('user.orders.*') ? 'ph-fill' : 'ph' }} ph-receipt text-lg"></i>
                     <span>Pesanan Saya</span>
                 </a>
             </div>
@@ -47,8 +47,9 @@
                 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors flex items-center" title="Keluar">
-                        <i class="ph ph-sign-out text-xl"></i>
+                    <button type="submit" class="text-gray-500 hover:text-red-600 hover:bg-red-50 border border-gray-200 hover:border-red-100 rounded-lg px-3 py-1.5 transition-all flex items-center space-x-1.5" title="Keluar">
+                        <i class="ph ph-sign-out text-lg"></i>
+                        <span class="text-xs font-semibold">Keluar</span>
                     </button>
                 </form>
             </div>
@@ -61,20 +62,24 @@
 
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50">
         <a href="{{ route('user.catalog') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
-            <i class="ph {{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'ph-storefront-fill' : 'ph-storefront' }} text-2xl"></i>
+            <i class="{{ request()->routeIs('user.catalog') || request()->routeIs('user.checkout*') ? 'ph-fill' : 'ph' }} ph-storefront text-2xl"></i>
             <span class="text-[10px] font-semibold">Katalog</span>
         </a>
         
         <a href="{{ route('user.dashboard') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.dashboard') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
-            <i class="ph {{ request()->routeIs('user.dashboard') ? 'ph-trend-up-fill' : 'ph-trend-up' }} text-2xl"></i>
+            <i class="{{ request()->routeIs('user.dashboard') ? 'ph-fill' : 'ph' }} ph-trend-up text-2xl"></i>
             <span class="text-[10px] font-semibold">Tren Harga</span>
         </a>
         
         <a href="{{ route('user.orders.index') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.orders.*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
-            <i class="ph {{ request()->routeIs('user.orders.*') ? 'ph-receipt-fill' : 'ph-receipt' }} text-2xl"></i>
+            <i class="{{ request()->routeIs('user.orders.*') ? 'ph-fill' : 'ph' }} ph-receipt text-2xl"></i>
             <span class="text-[10px] font-semibold">Pesanan</span>
-            
-            </a>
+        </a>
+
+        <a href="{{ route('profile.edit') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('profile.*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="{{ request()->routeIs('profile.*') ? 'ph-fill' : 'ph' }} ph-user text-2xl"></i>
+            <span class="text-[10px] font-semibold">Profil</span>
+        </a>
     </div>
 
     @stack('scripts')

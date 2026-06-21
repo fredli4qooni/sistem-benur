@@ -1,40 +1,40 @@
 @extends('layouts.user')
 
 @section('content')
-<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8 flex flex-col md:flex-row items-center justify-between">
-    <div class="flex items-center space-x-4">
-        <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-[#1A6B3C] shrink-0 border border-green-100">
-            <i class="ph-fill ph-hand-waving text-2xl"></i>
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 mb-6 md:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
+    <div class="flex items-center space-x-3 md:space-x-4">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-green-50 rounded-full flex items-center justify-center text-[#1A6B3C] shrink-0 border border-green-100">
+            <i class="ph-fill ph-hand-waving text-xl md:text-2xl"></i>
         </div>
         <div>
-            <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Selamat datang, {{ Auth::user()->name }}!</h2>
-            <p class="text-sm text-gray-500 mt-0.5">Pantau pergerakan harga pasar benur hari ini untuk keuntungan maksimal tambak Anda.</p>
+            <h2 class="text-lg md:text-xl font-extrabold text-gray-900 tracking-tight leading-tight">Selamat datang, {{ Auth::user()->name }}!</h2>
+            <p class="text-xs md:text-sm text-gray-500 mt-0.5">Pantau pergerakan harga pasar benur hari ini.</p>
         </div>
     </div>
-    <a href="{{ route('user.catalog') }}" class="mt-6 md:mt-0 px-6 py-2.5 bg-[#1A6B3C] text-white text-sm font-bold rounded-lg hover:bg-[#2E8B57] transition-colors shadow-sm flex items-center shrink-0">
+    <a href="{{ route('user.catalog') }}" class="w-full md:w-auto justify-center px-6 py-2.5 bg-[#1A6B3C] text-white text-sm font-bold rounded-lg hover:bg-[#2E8B57] transition-colors shadow-sm flex items-center shrink-0">
         Pesan Benur Sekarang
         <i class="ph ph-arrow-right ml-2 text-lg"></i>
     </a>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
     
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 lg:col-span-2 flex flex-col">
-        <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-200 lg:col-span-2 flex flex-col">
+        <div class="flex items-center justify-between border-b border-gray-100 pb-3 md:pb-4 mb-3 md:mb-4">
             <div class="flex items-center space-x-2">
                 <i class="ph ph-chart-line-up text-lg text-gray-400"></i>
-                <h2 class="text-base font-bold text-gray-900">Grafik Tren Harga Pasar</h2>
+                <h2 class="text-sm md:text-base font-bold text-gray-900">Grafik Tren Harga</h2>
             </div>
-            <span class="text-xs font-medium text-green-700 bg-green-50 border border-green-100 px-2.5 py-1 rounded-md flex items-center">
-                <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 animate-pulse"></span> Live Update
+            <span class="text-[10px] md:text-xs font-medium text-green-700 bg-green-50 border border-green-100 px-2 py-1 rounded-md flex items-center">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 animate-pulse"></span> Live
             </span>
         </div>
-        <div class="flex-1 h-72 min-h-[18rem]">
+        <div class="flex-1 h-56 md:h-72 min-h-[14rem] md:min-h-[18rem]">
             <canvas id="priceTrendChart"></canvas>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col">
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col">
         <div class="flex items-center space-x-2 border-b border-gray-100 pb-4 mb-4">
             <i class="ph-fill ph-fire text-lg text-orange-500"></i>
             <h2 class="text-base font-bold text-gray-900">Paling Sering Dipesan</h2>
@@ -66,11 +66,42 @@
 </div>
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-    <div class="p-6 border-b border-gray-100 flex items-center space-x-2">
+    <div class="p-4 md:p-6 border-b border-gray-100 flex items-center space-x-2">
         <i class="ph ph-tag text-lg text-gray-400"></i>
-        <h2 class="text-base font-bold text-gray-900">Daftar Harga Terkini</h2>
+        <h2 class="text-sm md:text-base font-bold text-gray-900">Daftar Harga Terkini</h2>
     </div>
-    <div class="overflow-x-auto">
+
+    <!-- Mobile View (Card List) -->
+    <div class="block md:hidden divide-y divide-gray-100">
+        @foreach($currentPrices as $item)
+        <div class="p-4">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900">{{ $item->name }}</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5">{{ $item->category ?? '-' }}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-extrabold text-[#1A6B3C]">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+                    <p class="text-[10px] text-gray-400">per {{ $item->unit }}</p>
+                </div>
+            </div>
+            <div class="mt-2">
+                @if($item->stock > 0)
+                    <span class="inline-flex items-center text-green-700 font-medium text-[10px] bg-green-50 px-2 py-0.5 rounded border border-green-100">
+                        <i class="ph-fill ph-check-circle mr-1"></i> Stok: {{ $item->stock }}
+                    </span>
+                @else
+                    <span class="inline-flex items-center text-red-600 font-medium text-[10px] bg-red-50 px-2 py-0.5 rounded border border-red-100">
+                        <i class="ph-fill ph-x-circle mr-1"></i> Stok Habis
+                    </span>
+                @endif
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+    <!-- Desktop View (Table) -->
+    <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">
             <thead class="bg-gray-50/70 border-b border-gray-200 text-gray-500 font-medium text-xs uppercase tracking-wider">
                 <tr>

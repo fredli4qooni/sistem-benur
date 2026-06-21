@@ -23,7 +23,7 @@
 @endif
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-    <div class="overflow-x-auto">
+    <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-left text-sm whitespace-nowrap">
             <thead class="bg-gray-50/70 border-b border-gray-200 text-gray-500 font-medium text-xs uppercase tracking-wider">
                 <tr>
@@ -91,6 +91,58 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="block md:hidden divide-y divide-gray-100">
+        @forelse($customers as $customer)
+        <div class="p-4 space-y-3">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gray-100 text-gray-700 font-bold text-sm flex items-center justify-center border border-gray-200 shrink-0">
+                    {{ substr($customer->name, 0, 2) }}
+                </div>
+                <div class="ml-3 flex-1 overflow-hidden">
+                    <p class="font-bold text-gray-900 leading-tight truncate">{{ $customer->name }}</p>
+                    <p class="text-[11px] text-gray-500 font-mono truncate">{{ $customer->email }}</p>
+                </div>
+                <div class="shrink-0 ml-2">
+                    @if($customer->status === 'aktif')
+                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-green-50 text-green-700">
+                            Aktif
+                        </span>
+                    @elseif($customer->status === 'nonaktif')
+                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-gray-100 text-gray-600">
+                            Nonaktif
+                        </span>
+                    @else
+                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-red-50 text-red-700">
+                            Diblokir
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div class="text-xs text-gray-600 space-y-1 pl-13">
+                <p class="flex items-start"><i class="ph ph-phone mr-1.5 mt-0.5 text-gray-400"></i> {{ $customer->phone ?? 'Belum diisi' }}</p>
+                <p class="flex items-start"><i class="ph ph-map-pin mr-1.5 mt-0.5 text-gray-400"></i> <span class="line-clamp-2">{{ $customer->address ?? '-' }}</span></p>
+            </div>
+            <div class="pt-2 border-t border-gray-50">
+                <form action="{{ route('admin.customers.update-status', $customer->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <select name="status" onchange="this.form.submit()" class="w-full text-xs border-gray-200 bg-gray-50 rounded-lg py-2 px-3 focus:ring-1 focus:ring-[#1A6B3C] focus:border-[#1A6B3C] font-semibold text-gray-700 cursor-pointer text-center appearance-none">
+                        <option value="aktif" {{ $customer->status === 'aktif' ? 'selected' : '' }}>Aktifkan Akun</option>
+                        <option value="nonaktif" {{ $customer->status === 'nonaktif' ? 'selected' : '' }}>Nonaktifkan Akun</option>
+                        <option value="blokir" {{ $customer->status === 'blokir' ? 'selected' : '' }}>Blokir Akun</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        @empty
+        <div class="p-8 text-center text-gray-400">
+            <i class="ph ph-users-quad text-4xl mb-2 block text-gray-300"></i>
+            <p class="text-sm">Tidak ada data pelanggan ditemukan.</p>
+        </div>
+        @endforelse
     </div>
     
     @if($customers->hasPages())

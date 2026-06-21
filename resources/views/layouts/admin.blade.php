@@ -12,7 +12,8 @@
 
 <body class="font-sans antialiased bg-gray-50 flex h-screen overflow-hidden selection:bg-[#1A6B3C] selection:text-white">
 
-    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col hidden md:flex transition-all duration-300">
+    <!-- Sidebar Desktop Only -->
+    <aside id="admin-sidebar" class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 z-50 transition-transform duration-300 ease-in-out">
         <div class="h-16 flex items-center px-6 border-b border-gray-100">
             <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C] mr-2"></i>
             <span class="text-xl font-extrabold text-gray-900 tracking-tight">BENUR-Q <span class="text-[#1A6B3C] text-sm">PRO</span></span>
@@ -22,37 +23,37 @@
             <p class="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-4">Menu Utama</p>
 
             <a href="{{ route('admin.dashboard') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.dashboard') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <i class="ph {{ request()->routeIs('admin.dashboard') ? 'ph-squares-four-fill' : 'ph-squares-four' }} text-xl mr-3 {{ request()->routeIs('admin.dashboard') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                <i class="{{ request()->routeIs('admin.dashboard') ? 'ph-fill' : 'ph' }} ph-squares-four text-xl mr-3 {{ request()->routeIs('admin.dashboard') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                 Dashboard
             </a>
 
             <p class="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-6">Manajemen Operasional</p>
 
             <a href="{{ route('admin.products.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.products.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <i class="ph {{ request()->routeIs('admin.products.*') ? 'ph-package-fill' : 'ph-package' }} text-xl mr-3 {{ request()->routeIs('admin.products.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                <i class="{{ request()->routeIs('admin.products.*') ? 'ph-fill' : 'ph' }} ph-package text-xl mr-3 {{ request()->routeIs('admin.products.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                 Katalog Benur
             </a>
 
             <a href="{{ route('admin.orders.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.orders.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <i class="ph {{ request()->routeIs('admin.orders.*') ? 'ph-shopping-cart-fill' : 'ph-shopping-cart' }} text-xl mr-3 {{ request()->routeIs('admin.orders.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                <i class="{{ request()->routeIs('admin.orders.*') ? 'ph-fill' : 'ph' }} ph-shopping-cart text-xl mr-3 {{ request()->routeIs('admin.orders.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                 Pesanan Masuk
                 <span class="ml-auto bg-red-100 text-red-600 py-0.5 px-2 rounded-full text-[10px] font-bold">Baru</span>
             </a>
 
             <a href="{{ route('admin.customers.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.customers.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <i class="ph {{ request()->routeIs('admin.customers.*') ? 'ph-users-fill' : 'ph-users' }} text-xl mr-3 {{ request()->routeIs('admin.customers.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                <i class="{{ request()->routeIs('admin.customers.*') ? 'ph-fill' : 'ph' }} ph-users text-xl mr-3 {{ request()->routeIs('admin.customers.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                 Data Pelanggan
             </a>
 
             <p class="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-6">Analitik & Sistem</p>
 
             <a href="{{ route('admin.reports.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.reports.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <i class="ph {{ request()->routeIs('admin.reports.*') ? 'ph-chart-line-up-fill' : 'ph-chart-line-up' }} text-xl mr-3 {{ request()->routeIs('admin.reports.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                <i class="{{ request()->routeIs('admin.reports.*') ? 'ph-fill' : 'ph' }} ph-chart-line-up text-xl mr-3 {{ request()->routeIs('admin.reports.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                 Laporan Penjualan
             </a>
 
             <a href="{{ route('admin.settings.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.settings.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
-                <i class="ph {{ request()->routeIs('admin.settings.*') ? 'ph-gear-fill' : 'ph-gear' }} text-xl mr-3 {{ request()->routeIs('admin.settings.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                <i class="{{ request()->routeIs('admin.settings.*') ? 'ph-fill' : 'ph' }} ph-gear text-xl mr-3 {{ request()->routeIs('admin.settings.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                 Pengaturan Profil
             </a>
         </nav>
@@ -81,9 +82,11 @@
 
         <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
             <div class="flex items-center">
-                <button class="md:hidden text-gray-500 hover:text-gray-700 focus:outline-none p-2 -ml-2 rounded-lg hover:bg-gray-100 mr-2">
-                    <i class="ph ph-list text-2xl"></i>
-                </button>
+                <!-- Branding untuk Mobile -->
+                <div class="md:hidden flex items-center mr-4">
+                    <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C] mr-2"></i>
+                    <span class="text-lg font-extrabold text-gray-900 tracking-tight">BENUR-Q</span>
+                </div>
 
                 <div class="hidden sm:flex items-center text-sm text-gray-500">
                     <i class="ph ph-house mr-2"></i>
@@ -93,20 +96,61 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <button class="text-gray-400 hover:text-gray-600 transition relative">
+                @php
+                    $headerPendingOrders = \App\Models\Order::where('status', 'pending')->count();
+                @endphp
+                <a href="{{ route('admin.orders.index') }}" class="text-gray-400 hover:text-gray-600 transition relative" title="Pesanan Pending">
                     <i class="ph ph-bell text-xl"></i>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                </button>
+                    @if($headerPendingOrders > 0)
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                    @endif
+                </a>
             </div>
         </header>
 
-        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6 md:p-8">
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6 pb-24 md:p-8">
             <div class="max-w-7xl mx-auto">
                 @yield('content')
             </div>
         </main>
     </div>
 
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-50 pb-safe">
+        <a href="{{ route('admin.dashboard') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('admin.dashboard') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="{{ request()->routeIs('admin.dashboard') ? 'ph-fill' : 'ph' }} ph-squares-four text-2xl"></i>
+            <span class="text-[10px] font-semibold">Home</span>
+        </a>
+        
+        <a href="{{ route('admin.products.index') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('admin.products.*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="{{ request()->routeIs('admin.products.*') ? 'ph-fill' : 'ph' }} ph-package text-2xl"></i>
+            <span class="text-[10px] font-semibold">Benur</span>
+        </a>
+        
+        <a href="{{ route('admin.orders.index') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors relative {{ request()->routeIs('admin.orders.*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="{{ request()->routeIs('admin.orders.*') ? 'ph-fill' : 'ph' }} ph-shopping-cart text-2xl"></i>
+            <span class="text-[10px] font-semibold">Pesanan</span>
+            @php
+                $pendingOrders = \App\Models\Order::where('status', 'pending')->count();
+            @endphp
+            @if($pendingOrders > 0)
+                <span class="absolute top-1 right-3 w-2.5 h-2.5 bg-red-500 rounded-full border border-white"></span>
+            @endif
+        </a>
+
+        <a href="{{ route('admin.customers.index') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('admin.customers.*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="{{ request()->routeIs('admin.customers.*') ? 'ph-fill' : 'ph' }} ph-users text-2xl"></i>
+            <span class="text-[10px] font-semibold">Pelanggan</span>
+        </a>
+
+        @php
+            $isMenuActive = request()->routeIs('admin.menu') || request()->routeIs('profile.*') || request()->routeIs('admin.settings.*') || request()->routeIs('admin.reports.*');
+        @endphp
+        <a href="{{ route('admin.menu') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ $isMenuActive ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <i class="{{ $isMenuActive ? 'ph-fill' : 'ph' }} ph-list text-2xl"></i>
+            <span class="text-[10px] font-semibold">Menu</span>
+        </a>
+    </div>
 </body>
 
 </html>

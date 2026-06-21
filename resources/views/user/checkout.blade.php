@@ -1,9 +1,9 @@
 @extends('layouts.user')
 
 @section('content')
-<div class="mb-6">
-    <a href="{{ route('user.catalog') }}" class="text-sm text-gray-500 hover:text-[#1A6B3C] mb-2 inline-block">&larr; Kembali ke Katalog</a>
-    <h1 class="text-2xl font-bold text-gray-800">Checkout Pesanan</h1>
+<div class="mb-4 md:mb-6">
+    <a href="{{ route('user.catalog') }}" class="text-xs md:text-sm text-gray-500 hover:text-[#1A6B3C] mb-2 inline-block">&larr; Kembali ke Katalog</a>
+    <h1 class="text-xl md:text-2xl font-bold text-gray-800">Checkout Pesanan</h1>
 </div>
 
 @if(session('error'))
@@ -12,12 +12,12 @@
 </div>
 @endif
 
-<form action="{{ route('user.checkout.store', $product->id) }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<form action="{{ route('user.checkout.store', $product->id) }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
     @csrf
 
-    <div class="lg:col-span-2 space-y-6">
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h2 class="text-lg font-bold text-gray-800 border-b pb-3 mb-4">Informasi Pengiriman</h2>
+    <div class="lg:col-span-2 space-y-4 md:space-y-6">
+        <div class="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-100">
+            <h2 class="text-base md:text-lg font-bold text-gray-800 border-b pb-2 md:pb-3 mb-3 md:mb-4">Informasi Pengiriman</h2>
 
             <div class="space-y-4">
                 <div>
@@ -39,8 +39,8 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h2 class="text-lg font-bold text-gray-800 border-b pb-3 mb-4">Metode Pembayaran</h2>
+        <div class="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-100">
+            <h2 class="text-base md:text-lg font-bold text-gray-800 border-b pb-2 md:pb-3 mb-3 md:mb-4">Metode Pembayaran</h2>
             <div class="space-y-3">
                 <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                     <input type="radio" name="payment_method" value="qris" required class="text-[#1A6B3C] focus:ring-[#1A6B3C]" {{ old('payment_method') == 'qris' ? 'checked' : '' }}>
@@ -55,8 +55,8 @@
     </div>
 
     <div>
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 sticky top-24">
-            <h2 class="text-lg font-bold text-gray-800 border-b pb-3 mb-4">Ringkasan Pesanan</h2>
+        <div class="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-100 sticky top-20 md:top-24">
+            <h2 class="text-base md:text-lg font-bold text-gray-800 border-b pb-2 md:pb-3 mb-3 md:mb-4">Ringkasan Pesanan</h2>
 
             <div class="flex items-center space-x-4 mb-4">
                 @if($product->image)

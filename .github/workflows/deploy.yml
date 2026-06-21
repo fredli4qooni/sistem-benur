@@ -3,7 +3,7 @@ name: Deploy Web Penjualan Benur (ZIP Method)
 on:
   push:
     branches:
-      - main # Sesuaikan jika branch utama Anda master
+      - main
 
 jobs:
   deploy:
