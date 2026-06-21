@@ -82,27 +82,24 @@
                 <span class="font-bold uppercase text-gray-700 ml-2 px-2 py-1 bg-gray-100 rounded text-sm">{{ $order->status }}</span>
             </div>
 
-            @if($order->status === 'pending')
-            <div class="border rounded-lg p-2 bg-gray-50 mb-4">
-                @if($order->transaction && $order->transaction->proof_image)
-                <p class="text-xs text-gray-500 mb-2 text-center">Bukti Transfer:</p>
-                <img src="{{ asset('storage/' . $order->transaction->proof_image) }}" class="w-full h-auto rounded object-contain max-h-64 mx-auto" alt="Bukti Transfer">
-                @else
-                <div class="p-4 text-center text-gray-400 text-sm">
-                    Belum ada bukti pembayaran yang diunggah.
+            @if($order->is_cancellation_requested && !in_array($order->status, ['dibatalkan', 'selesai']))
+            <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-lg mb-4">
+                <div class="flex items-start">
+                    <i class="ph-fill ph-warning-circle text-xl mr-2 mt-0.5 text-yellow-600"></i>
+                    <div>
+                        <h4 class="font-bold text-sm">Pengajuan Pembatalan Pelanggan</h4>
+                        <p class="text-xs mt-1">Alasan: <span class="font-semibold">{{ $order->cancel_reason }}</span></p>
+                    </div>
                 </div>
-                @endif
             </div>
+            @endif
 
-            <form action="{{ route('admin.orders.confirm', $order->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="w-full bg-[#1A6B3C] text-white font-bold py-3 rounded-lg hover:bg-[#2E8B57] transition shadow text-center block" {{ (!$order->transaction || !$order->transaction->proof_image) ? 'onclick="return confirm(\'Pelanggan belum mengunggah bukti bayar. Yakin ingin mengonfirmasi pesanan ini secara manual?\')"' : '' }}>
-                    ✓ Konfirmasi Pembayaran & Potong Stok
-                </button>
-            </form>
-
+            @if($order->status === 'pending')
+            <div class="bg-blue-50 text-blue-800 text-xs p-3 rounded-lg text-center mb-4 border border-blue-200">
+                Menunggu pelanggan menyelesaikan pembayaran via Midtrans.
+            </div>
             @elseif(!in_array($order->status, ['selesai', 'dibatalkan']))
-            <form action="{{ route('admin.orders.update-status', $order->id) }}" method="POST" class="mt-4 border-t pt-4">
+            <form action="{{ route('admin.orders.update-status', $order->id) }}" method="POST" class="mt-4">
                 @csrf
                 @method('PATCH')
 
@@ -119,10 +116,39 @@
                     </button>
                 </div>
             </form>
-
             @else
             <div class="bg-gray-100 text-gray-600 p-3 rounded-lg text-center font-semibold text-sm">
                 Pesanan ini telah berakhir ({{ ucfirst($order->status) }}).
+            </div>
+            @endif
+
+            @if(!in_array($order->status, ['dibatalkan', 'selesai']))
+            <div class="mt-6 pt-4 border-t border-gray-200">
+                <form action="{{ route('admin.orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan ini? Stok akan dikembalikan otomatis.');">
+                    @csrf
+                    <button type="submit" class="w-full bg-white border border-red-200 text-red-600 font-bold py-2.5 rounded-lg hover:bg-red-50 transition-colors text-sm">
+                        Batalkan Pesanan (Otoritas Admin)
+                    </button>
+                </form>
+            </div>
+            @endif
+
+            @if($order->status === 'dibatalkan' && $order->transaction && $order->transaction->status === 'terkonfirmasi')
+            <div class="mt-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                <h3 class="font-bold text-orange-800 text-sm mb-2"><i class="ph-fill ph-warning mr-1"></i> Tindakan Diperlukan: Refund</h3>
+                <p class="text-xs text-orange-700 mb-4">Pesanan dibatalkan setelah pembayaran dikonfirmasi. Anda harus mengembalikan dana sebesar <strong class="text-black">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</strong> secara manual kepada pelanggan.</p>
+                <form action="{{ route('admin.orders.refund', $order->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin sudah mentransfer balik uang pelanggan? Status akan berubah menjadi Dikembalikan.');">
+                    @csrf
+                    <button type="submit" class="w-full bg-orange-600 text-white font-bold py-2 rounded shadow hover:bg-orange-700 transition-colors text-sm">
+                        Tandai Dana Sudah Dikembalikan
+                    </button>
+                </form>
+            </div>
+            @endif
+
+            @if($order->status === 'dibatalkan' && $order->transaction && $order->transaction->status === 'dikembalikan')
+            <div class="mt-6 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
+                <span class="text-green-700 text-xs font-bold"><i class="ph-fill ph-check-circle mr-1 text-sm"></i> Dana telah dikembalikan (Refunded)</span>
             </div>
             @endif
         </div>

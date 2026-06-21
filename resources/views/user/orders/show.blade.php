@@ -81,7 +81,52 @@
                 <span class="text-sm font-medium text-gray-500">Total Pembayaran</span>
                 <span class="font-extrabold text-lg text-[#1A6B3C]">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span>
             </div>
+            
+            @if($order->status === 'pending')
+                <div class="border-t pt-4 mt-4">
+                    <form action="{{ route('user.orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin membatalkan pesanan ini?');">
+                        @csrf
+                        <button type="submit" class="w-full bg-white border border-red-200 text-red-600 font-bold py-2.5 rounded-lg hover:bg-red-50 transition-colors text-sm">
+                            Batalkan Pesanan
+                        </button>
+                    </form>
+                </div>
+            @elseif(in_array($order->status, ['dikonfirmasi', 'disiapkan']))
+                @if($order->is_cancellation_requested)
+                    <div class="border-t pt-4 mt-4">
+                        <div class="bg-yellow-50 text-yellow-800 p-3 rounded-lg text-sm border border-yellow-200 text-center font-medium">
+                            <i class="ph-fill ph-clock text-lg mb-1 block"></i>
+                            Pengajuan pembatalan Anda sedang ditinjau oleh Admin.
+                        </div>
+                    </div>
+                @else
+                    <div class="border-t pt-4 mt-4">
+                        <button type="button" onclick="document.getElementById('cancelModal').classList.remove('hidden')" class="w-full bg-white border border-orange-200 text-orange-600 font-bold py-2.5 rounded-lg hover:bg-orange-50 transition-colors text-sm">
+                            Ajukan Pembatalan
+                        </button>
+                    </div>
+                @endif
+            @endif
         </div>
+    </div>
+</div>
+
+<!-- Modal Ajukan Pembatalan -->
+<div id="cancelModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-gray-900">Ajukan Pembatalan</h3>
+            <button type="button" onclick="document.getElementById('cancelModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600"><i class="ph ph-x text-xl"></i></button>
+        </div>
+        <p class="text-sm text-gray-500 mb-4 leading-relaxed">Harap masukkan alasan pembatalan. Admin akan meninjau pengajuan Anda. Karena pesanan ini sudah dibayar, dana akan dikembalikan (refund) secara manual oleh admin jika pengajuan disetujui.</p>
+        <form action="{{ route('user.orders.request-cancel', $order->id) }}" method="POST">
+            @csrf
+            <textarea name="cancel_reason" rows="3" required class="w-full border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 mb-4 text-sm" placeholder="Contoh: Salah pilih benur / Ingin ubah alamat / Berubah pikiran"></textarea>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="document.getElementById('cancelModal').classList.add('hidden')" class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">Batal</button>
+                <button type="submit" class="px-4 py-2.5 text-sm font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-lg transition-colors">Kirim Pengajuan</button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

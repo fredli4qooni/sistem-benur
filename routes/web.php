@@ -35,6 +35,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::post('/orders/{order}/confirm', [AdminOrderController::class, 'confirm'])->name('orders.confirm');
 
         Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
+        Route::post('/orders/{order}/cancel', [AdminOrderController::class, 'cancel'])->name('orders.cancel');
+        Route::post('/orders/{order}/refund', [AdminOrderController::class, 'markAsRefunded'])->name('orders.refund');
 
         Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
         Route::patch('/customers/{customer}/status', [CustomerController::class, 'updateStatus'])->name('customers.update-status');
@@ -64,6 +66,8 @@ Route::middleware(['auth', 'verified', 'role:user'])
 
         Route::get('/pesanan', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/pesanan/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::post('/pesanan/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+        Route::post('/pesanan/{order}/request-cancel', [OrderController::class, 'requestCancel'])->name('orders.request-cancel');
     });
 
 // Route Profile (bisa diakses admin & user)

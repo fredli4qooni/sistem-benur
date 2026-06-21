@@ -74,4 +74,80 @@ class OrderController extends Controller
 
         return back()->with('success', 'Status pengiriman pesanan berhasil diperbarui menjadi: ' . strtoupper($validated['status']));
     }
+
+    public function cancel(Order $order)
+    {
+        if (in_array($order->status, ['selesai', 'dibatalkan'])) {
+            return back()->with('error', 'Pesanan yang sudah selesai atau dibatalkan tidak dapat dibatalkan lagi.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $previousStatus = $order->status;
+            $order->update([
+                'status' => 'dibatalkan',
+                'is_cancellation_requested' => false 
+            ]);
+
+            // Jika pesanan sudah dibayar (status sebelumnya dikonfirmasi, disiapkan, dikirim),
+            // biarkan status transaksi tetap terkonfirmasi untuk proses refund manual.
+            // Jika belum dibayar (pending), gagal-kan transaksi.
+            if ($previousStatus === 'pending') {
+                if ($order->transaction) {
+                    $order->transaction->update(['status' => 'gagal']);
+                }
+                
+                // Return stock
+                foreach ($order->items as $item) {
+                    $product = $item->product;
+                    if ($product) {
+                        $product->increment('stock', $item->quantity);
+                    }
+                }
+
+                // Coba batalkan di Midtrans (abaikan jika gagal)
+                try {
+                    \Midtrans\Config::$serverKey = config('midtrans.server_key');
+                    \Midtrans\Config::$isProduction = config('midtrans.is_production');
+                    \Midtrans\Transaction::cancel($order->order_number);
+                } catch (\Exception $e) {}
+            } else {
+                // Return stock since it was deducted when confirmed
+                foreach ($order->items as $item) {
+                    $product = $item->product;
+                    if ($product) {
+                        $product->increment('stock', $item->quantity);
+                    }
+                }
+            }
+
+            DB::commit();
+            
+            if ($previousStatus !== 'pending') {
+                return back()->with('success', 'Pesanan berhasil dibatalkan. Stok telah dikembalikan. HARAP LAKUKAN REFUND MANUAl!');
+            }
+            return back()->with('success', 'Pesanan berhasil dibatalkan dan stok telah dikembalikan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal membatalkan pesanan: ' . $e->getMessage());
+        }
+    }
+
+    public function markAsRefunded(Order $order)
+    {
+        if ($order->status !== 'dibatalkan') {
+            return back()->with('error', 'Pesanan ini tidak dalam status dibatalkan.');
+        }
+
+        if (!$order->transaction || $order->transaction->status !== 'terkonfirmasi') {
+            return back()->with('error', 'Transaksi ini tidak membutuhkan refund atau sudah dikembalikan.');
+        }
+
+        $order->transaction->update([
+            'status' => 'dikembalikan'
+        ]);
+
+        return back()->with('success', 'Dana pesanan berhasil ditandai sebagai telah dikembalikan (Refunded).');
+    }
 }

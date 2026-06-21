@@ -132,4 +132,74 @@ class OrderController extends Controller
             return back()->with('error', 'Terjadi kesalahan sistem: ' . $e->getMessage())->withInput();
         }
     }
+
+    public function cancel(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Akses tidak sah.');
+        }
+
+        if ($order->status !== 'pending') {
+            return back()->with('error', 'Hanya pesanan yang belum dibayar yang dapat dibatalkan langsung.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $order->update(['status' => 'dibatalkan']);
+            
+            if ($order->transaction) {
+                $order->transaction->update(['status' => 'gagal']);
+            }
+
+            // Return stock
+            foreach ($order->items as $item) {
+                $product = $item->product;
+                if ($product) {
+                    $product->increment('stock', $item->quantity);
+                }
+            }
+
+            // Cancel on Midtrans
+            try {
+                Config::$serverKey = config('midtrans.server_key');
+                Config::$isProduction = config('midtrans.is_production');
+                \Midtrans\Transaction::cancel($order->order_number);
+            } catch (\Exception $e) {
+                // Ignore midtrans error if already expired/cancelled
+            }
+
+            DB::commit();
+            return back()->with('success', 'Pesanan berhasil dibatalkan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal membatalkan pesanan: ' . $e->getMessage());
+        }
+    }
+
+    public function requestCancel(Request $request, Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Akses tidak sah.');
+        }
+
+        if (!in_array($order->status, ['dikonfirmasi', 'disiapkan'])) {
+            return back()->with('error', 'Pesanan ini tidak dapat diajukan pembatalan saat ini.');
+        }
+
+        if ($order->is_cancellation_requested) {
+            return back()->with('error', 'Anda sudah mengajukan pembatalan untuk pesanan ini.');
+        }
+
+        $request->validate([
+            'cancel_reason' => 'required|string|max:500'
+        ]);
+
+        $order->update([
+            'is_cancellation_requested' => true,
+            'cancel_reason' => $request->cancel_reason
+        ]);
+
+        return back()->with('success', 'Pengajuan pembatalan telah dikirim ke Admin untuk ditinjau.');
+    }
 }
