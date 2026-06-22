@@ -42,7 +42,7 @@ class DashboardController extends Controller
         // Menyusun data Y (Harga) per produk
         foreach ($products as $product) {
             $productPrices = [];
-            $lastKnownPrice = 0;
+            $lastKnownPrice = null;
 
             foreach ($allDates as $date) {
                 // Cari apakah ada perubahan harga di tanggal ini
