@@ -134,6 +134,16 @@
                         </button>
                     </div>
                 @endif
+            @elseif($order->status === 'dikirim')
+                <div class="border-t pt-4 mt-4">
+                    <form action="{{ route('user.orders.complete', $order->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin benur telah diterima dalam kondisi baik? Status pesanan akan menjadi Selesai.');">
+                        @csrf
+                        <button type="submit" class="w-full bg-[#1A6B3C] text-white font-bold py-3 rounded-lg hover:bg-[#2E8B57] transition-colors shadow-md">
+                            <i class="ph-bold ph-check-circle mr-1"></i> Pesanan Diterima (Selesai)
+                        </button>
+                    </form>
+                    <p class="text-xs text-center text-gray-500 mt-3">Silakan klik tombol di atas jika Anda telah menerima pesanan.</p>
+                </div>
             @endif
         </div>
     </div>

@@ -211,4 +211,19 @@ class OrderController extends Controller
 
         return back()->with('success', 'Pengajuan pembatalan telah dikirim ke Admin untuk ditinjau.');
     }
+
+    public function markAsCompleted(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403, 'Akses tidak sah.');
+        }
+
+        if ($order->status !== 'dikirim') {
+            return back()->with('error', 'Pesanan ini belum dalam status pengiriman atau sudah diselesaikan.');
+        }
+
+        $order->update(['status' => 'selesai']);
+
+        return back()->with('success', 'Terima kasih telah melakukan konfirmasi! Pesanan Anda telah selesai.');
+    }
 }

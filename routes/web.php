@@ -69,6 +69,7 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::get('/pesanan/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::post('/pesanan/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
         Route::post('/pesanan/{order}/request-cancel', [OrderController::class, 'requestCancel'])->name('orders.request-cancel');
+        Route::post('/pesanan/{order}/complete', [OrderController::class, 'markAsCompleted'])->name('orders.complete');
     });
 
 // Route Profile (bisa diakses admin & user)
