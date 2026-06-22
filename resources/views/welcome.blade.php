@@ -300,7 +300,7 @@
                     <span class="text-lg font-extrabold text-gray-900 tracking-tight">SENTRA BENUR</span>
                 </div>
                 <div class="text-sm text-gray-500 font-medium text-center md:text-right">
-                    <p>&copy; {{ date('Y') }} PT Benur Digital Indonesia. Hak Cipta Dilindungi.</p>
+                    <p>&copy; {{ date('Y') }} PT Sentra Benur Indonesia. Hak Cipta Dilindungi.</p>
                 </div>
             </div>
         </div>
