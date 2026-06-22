@@ -8,6 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body class="antialiased bg-white text-gray-900 font-sans selection:bg-[#1A6B3C] selection:text-white">
@@ -71,20 +72,48 @@
                 </div>
             </div>
 
-            <div class="lg:w-1/2 mt-16 lg:mt-0 hidden md:block">
+            <div class="lg:w-1/2 mt-16 lg:mt-0 hidden md:block relative z-20">
                 <div class="relative w-full max-w-lg mx-auto">
+                    <!-- Ornamen Dekoratif di Belakang Slider -->
+                    <div class="absolute -inset-4 bg-gradient-to-tr from-[#1A6B3C]/20 to-emerald-400/20 rounded-3xl transform rotate-3 blur-sm"></div>
                     <div class="absolute -inset-4 bg-gray-200/50 rounded-3xl transform -rotate-3 transition-transform hover:rotate-0 duration-500"></div>
-                    <div class="relative bg-white border border-gray-200 shadow-xl rounded-3xl overflow-hidden p-8 flex flex-col items-center justify-center h-96">
-                        <div class="w-24 h-24 bg-green-50 border border-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="ph-fill ph-shrimp text-5xl text-[#1A6B3C]"></i>
+                    
+                    <!-- Swiper Container -->
+                    <div class="swiper heroSwiper relative bg-white border border-gray-200 shadow-2xl rounded-3xl overflow-hidden h-[400px]">
+                        <div class="swiper-wrapper">
+                            @forelse($featuredProducts as $product)
+                            <div class="swiper-slide relative h-full bg-gray-100 group">
+                                @if($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="{{ $product->name }}">
+                                @else
+                                <div class="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-50">
+                                    <i class="ph ph-image text-6xl mb-3 text-gray-300"></i>
+                                </div>
+                                @endif
+                                
+                                <!-- Overlay Text -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-8 text-left">
+                                    <span class="inline-block self-start px-3 py-1 bg-[#1A6B3C] text-white text-[10px] font-bold rounded-md mb-3 uppercase tracking-wider shadow-sm">{{ $product->category ?? 'Produk Unggulan' }}</span>
+                                    <h3 class="text-white text-2xl font-extrabold line-clamp-2 leading-tight drop-shadow-md">{{ $product->name }}</h3>
+                                    <p class="text-emerald-400 font-extrabold text-xl mt-2 drop-shadow-md">Rp {{ number_format($product->price, 0, ',', '.') }} <span class="text-sm text-gray-300 font-medium">/ {{ $product->unit }}</span></p>
+                                </div>
+                            </div>
+                            @empty
+                            <div class="swiper-slide relative bg-white flex flex-col items-center justify-center h-full p-8">
+                                <div class="w-24 h-24 bg-green-50 border border-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i class="ph-fill ph-shrimp text-5xl text-[#1A6B3C]"></i>
+                                </div>
+                                <h3 class="text-2xl font-extrabold text-gray-900 text-center">Benur Kualitas Premium</h3>
+                                <p class="text-gray-500 mt-2 text-center font-medium">Bebas penyakit, pertumbuhan cepat, dan siap tebar ke tambak Anda.</p>
+                            </div>
+                            @endforelse
                         </div>
-                        <h3 class="text-2xl font-extrabold text-gray-900 text-center">Benur Kualitas Premium</h3>
-                        <p class="text-gray-500 mt-2 text-center font-medium">Bebas penyakit, pertumbuhan cepat, dan siap tebar ke tambak Anda.</p>
-
-                        <div class="mt-8 flex items-center space-x-2 text-xs font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-full border border-green-100">
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            <span>Sistem Pengiriman Terjadwal</span>
-                        </div>
+                        
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination mb-2"></div>
+                        <!-- Add Navigation -->
+                        <div class="swiper-button-next !text-white after:!text-lg w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full backdrop-blur-sm transition-colors right-4"></div>
+                        <div class="swiper-button-prev !text-white after:!text-lg w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full backdrop-blur-sm transition-colors left-4"></div>
                     </div>
                 </div>
             </div>
@@ -225,6 +254,27 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper(".heroSwiper", {
+                effect: "fade",
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                loop: true,
+            });
+        });
+    </script>
 </body>
 
 </html>
