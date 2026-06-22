@@ -26,12 +26,16 @@
                 
                 <div class="relative before:absolute before:left-[-22px] before:top-1 before:w-3.5 before:h-3.5 before:rounded-full {{ $currentStep >= 0 ? 'before:bg-[#1A6B3C]' : 'before:bg-gray-300' }}">
                     <h3 class="text-sm font-bold {{ $currentStep >= 0 ? 'text-gray-900' : 'text-gray-400' }}">Pesanan Masuk</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Menunggu validasi pembayaran oleh admin.</p>
+                    <p class="text-xs text-gray-500 mt-0.5">
+                        {{ $order->transaction && $order->transaction->method === 'tunai' ? 'Menunggu konfirmasi dan validasi pesanan oleh admin.' : 'Menunggu validasi pembayaran oleh admin.' }}
+                    </p>
                 </div>
 
                 <div class="relative before:absolute before:left-[-22px] before:top-1 before:w-3.5 before:h-3.5 before:rounded-full {{ $currentStep >= 1 ? 'before:bg-[#1A6B3C]' : 'before:bg-gray-300' }}">
                     <h3 class="text-sm font-bold {{ $currentStep >= 1 ? 'text-gray-900' : 'text-gray-400' }}">Dikonfirmasi</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Pembayaran valid, stok benur berhasil dipesan.</p>
+                    <p class="text-xs text-gray-500 mt-0.5">
+                        {{ $order->transaction && $order->transaction->method === 'tunai' ? 'Pesanan telah dikonfirmasi, stok benur berhasil dipesan.' : 'Pembayaran valid, stok benur berhasil dipesan.' }}
+                    </p>
                 </div>
 
                 <div class="relative before:absolute before:left-[-22px] before:top-1 before:w-3.5 before:h-3.5 before:rounded-full {{ $currentStep >= 2 ? 'before:bg-[#1A6B3C]' : 'before:bg-gray-300' }}">
@@ -41,12 +45,16 @@
 
                 <div class="relative before:absolute before:left-[-22px] before:top-1 before:w-3.5 before:h-3.5 before:rounded-full {{ $currentStep >= 3 ? 'before:bg-[#1A6B3C]' : 'before:bg-gray-300' }}">
                     <h3 class="text-sm font-bold {{ $currentStep >= 3 ? 'text-gray-900' : 'text-gray-400' }}">Dalam Pengiriman</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Kurir sedang menuju ke lokasi tambak Anda.</p>
+                    <p class="text-xs text-gray-500 mt-0.5">
+                        {{ $order->transaction && $order->transaction->method === 'tunai' ? 'Kurir sedang menuju ke lokasi tambak Anda. Siapkan uang tunai.' : 'Kurir sedang menuju ke lokasi tambak Anda.' }}
+                    </p>
                 </div>
 
                 <div class="relative before:absolute before:left-[-22px] before:top-1 before:w-3.5 before:h-3.5 before:rounded-full {{ $currentStep >= 4 ? 'before:bg-[#1A6B3C]' : 'before:bg-gray-300' }}">
                     <h3 class="text-sm font-bold {{ $currentStep >= 4 ? 'text-gray-900' : 'text-gray-400' }}">Selesai</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Benur telah sampai dan diterima dengan baik.</p>
+                    <p class="text-xs text-gray-500 mt-0.5">
+                        {{ $order->transaction && $order->transaction->method === 'tunai' ? 'Benur telah diterima dan pembayaran tunai telah diselesaikan.' : 'Benur telah sampai dan diterima dengan baik.' }}
+                    </p>
                 </div>
 
             </div>
