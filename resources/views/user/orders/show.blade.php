@@ -56,10 +56,19 @@
     <div class="bg-white rounded-xl shadow-sm p-6 border md:col-span-2 space-y-6">
         <div>
             <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-3">Detail Pengiriman</h2>
-            <div class="text-sm text-gray-600 space-y-1">
-                <p><span class="text-gray-400">Alamat Kirim:</span></p>
-                <p class="font-medium text-gray-800">{{ $order->delivery_address }}</p>
-                <p class="pt-2"><span class="text-gray-400">Estimasi Tiba:</span> <span class="font-bold text-green-700">{{ date('d M Y', strtotime($order->delivery_date)) }}</span></p>
+            <div class="text-sm text-gray-600 space-y-2">
+                <div>
+                    <p class="text-gray-400 text-xs uppercase tracking-wider font-bold mb-0.5">Alamat Kirim:</p>
+                    <p class="font-medium text-gray-800">{{ $order->delivery_address }}</p>
+                </div>
+                <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                    <span class="text-gray-500 font-medium">Estimasi Tiba</span>
+                    <span class="font-bold text-gray-900">{{ date('d M Y', strtotime($order->delivery_date)) }}</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-500 font-medium">Ongkos Kirim</span>
+                    <span class="font-extrabold text-[#1A6B3C] bg-green-50 px-2 py-1 rounded text-xs uppercase tracking-wider">Gratis (Free)</span>
+                </div>
             </div>
         </div>
 
