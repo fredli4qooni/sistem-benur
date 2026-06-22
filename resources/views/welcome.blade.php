@@ -92,10 +92,10 @@
                                 @endif
                                 
                                 <!-- Overlay Text -->
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-8 text-left">
-                                    <span class="inline-block self-start px-3 py-1 bg-[#1A6B3C] text-white text-[10px] font-bold rounded-md mb-3 uppercase tracking-wider shadow-sm">{{ $product->category ?? 'Produk Unggulan' }}</span>
-                                    <h3 class="text-white text-2xl font-extrabold line-clamp-2 leading-tight drop-shadow-md">{{ $product->name }}</h3>
-                                    <p class="text-emerald-400 font-extrabold text-xl mt-2 drop-shadow-md">Rp {{ number_format($product->price, 0, ',', '.') }} <span class="text-sm text-gray-300 font-medium">/ {{ $product->unit }}</span></p>
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent flex flex-col justify-end p-8 sm:p-10 text-left z-10">
+                                    <span class="inline-block self-start px-3 py-1.5 bg-[#1A6B3C] text-white text-[11px] font-black rounded-md mb-3 uppercase tracking-widest shadow-lg">{{ $product->category ?? 'Produk Unggulan' }}</span>
+                                    <h3 class="text-white text-3xl sm:text-4xl font-extrabold line-clamp-2 leading-tight drop-shadow-xl">{{ $product->name }}</h3>
+                                    <p class="text-emerald-400 font-extrabold text-2xl sm:text-3xl mt-3 drop-shadow-xl">Rp {{ number_format($product->price, 0, ',', '.') }} <span class="text-base sm:text-lg text-gray-300 font-medium">/ {{ $product->unit }}</span></p>
                                 </div>
                             </div>
                             @empty
@@ -110,10 +110,10 @@
                         </div>
                         
                         <!-- Add Pagination -->
-                        <div class="swiper-pagination mb-2"></div>
+                        <div class="swiper-pagination mb-2" style="--swiper-theme-color: #fff; --swiper-pagination-bullet-inactive-color: #aaa; --swiper-pagination-bullet-size: 10px;"></div>
                         <!-- Add Navigation -->
-                        <div class="swiper-button-next !text-white after:!text-lg w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full backdrop-blur-sm transition-colors right-4"></div>
-                        <div class="swiper-button-prev !text-white after:!text-lg w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full backdrop-blur-sm transition-colors left-4"></div>
+                        <div class="swiper-button-next !text-white after:!text-sm w-12 h-12 bg-black/40 hover:bg-[#1A6B3C] rounded-full backdrop-blur-md transition-all right-4 border border-white/20"></div>
+                        <div class="swiper-button-prev !text-white after:!text-sm w-12 h-12 bg-black/40 hover:bg-[#1A6B3C] rounded-full backdrop-blur-md transition-all left-4 border border-white/20"></div>
                     </div>
                 </div>
             </div>
