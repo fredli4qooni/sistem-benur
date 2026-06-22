@@ -93,6 +93,17 @@
             
             @if($order->status === 'pending')
                 <div class="border-t pt-4 mt-4">
+                    @if($order->transaction && $order->transaction->method === 'tunai')
+                        <div class="bg-blue-50 text-blue-800 p-4 rounded-lg text-sm border border-blue-200 text-center font-medium mb-4">
+                            <i class="ph-fill ph-info text-xl mb-1 block"></i>
+                            Pesanan Cash on Delivery (COD) Anda sedang menunggu validasi dari Admin. Anda tidak perlu membayar sekarang.
+                        </div>
+                    @else
+                        <a href="{{ route('user.payment', $order->id) }}" class="w-full block text-center bg-[#1A6B3C] text-white font-bold py-3 rounded-lg hover:bg-[#2E8B57] transition-colors mb-3 shadow-md">
+                            Selesaikan Pembayaran
+                        </a>
+                    @endif
+                    
                     <form action="{{ route('user.orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Anda yakin ingin membatalkan pesanan ini?');">
                         @csrf
                         <button type="submit" class="w-full bg-white border border-red-200 text-red-600 font-bold py-2.5 rounded-lg hover:bg-red-50 transition-colors text-sm">

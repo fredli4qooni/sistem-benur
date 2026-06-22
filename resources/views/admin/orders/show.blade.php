@@ -95,9 +95,22 @@
             @endif
 
             @if($order->status === 'pending')
-            <div class="bg-blue-50 text-blue-800 text-xs p-3 rounded-lg text-center mb-4 border border-blue-200">
-                Menunggu pelanggan menyelesaikan pembayaran via Midtrans.
-            </div>
+                @if($order->transaction && $order->transaction->method === 'tunai')
+                    <div class="bg-blue-50 text-blue-800 p-4 rounded-lg text-sm border border-blue-200 mb-4">
+                        <h4 class="font-bold text-base mb-1">Pesanan Pembayaran Tunai (COD)</h4>
+                        <p class="mb-3">Pelanggan memilih metode bayar di tempat. Harap validasi pesanan ini sebelum diproses.</p>
+                        <form action="{{ route('admin.orders.confirm', $order->id) }}" method="POST" onsubmit="return confirm('Konfirmasi pesanan COD ini? Status akan menjadi Dikonfirmasi dan siap dikirim.');">
+                            @csrf
+                            <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded shadow hover:bg-blue-700 transition-colors w-full">
+                                Konfirmasi Pesanan COD
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <div class="bg-blue-50 text-blue-800 text-xs p-3 rounded-lg text-center mb-4 border border-blue-200">
+                        Menunggu pelanggan menyelesaikan pembayaran via Midtrans.
+                    </div>
+                @endif
             @elseif(!in_array($order->status, ['selesai', 'dibatalkan']))
             <form action="{{ route('admin.orders.update-status', $order->id) }}" method="POST" class="mt-4">
                 @csrf
@@ -126,8 +139,19 @@
             <div class="mt-6 pt-4 border-t border-gray-200">
                 <form action="{{ route('admin.orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan pesanan ini? Stok akan dikembalikan otomatis.');">
                     @csrf
-                    <button type="submit" class="w-full bg-white border border-red-200 text-red-600 font-bold py-2.5 rounded-lg hover:bg-red-50 transition-colors text-sm">
+                    <button type="submit" class="w-full bg-white border border-red-200 text-red-600 font-bold py-2.5 rounded-lg hover:bg-red-50 transition-colors text-sm mb-3">
                         Batalkan Pesanan (Otoritas Admin)
+                    </button>
+                </form>
+            </div>
+            @endif
+
+            @if($order->transaction && $order->transaction->method === 'tunai' && $order->transaction->status === 'menunggu' && $order->status !== 'dibatalkan')
+            <div class="mt-4">
+                <form action="{{ route('admin.orders.mark-paid', $order->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin sudah menerima uang tunai dari pelanggan? Status transaksi akan berubah menjadi Lunas.');">
+                    @csrf
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg hover:bg-green-700 transition-colors text-sm shadow">
+                        <i class="ph-bold ph-money mr-1"></i> Tandai Pembayaran Lunas
                     </button>
                 </form>
             </div>

@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
         Route::post('/orders/{order}/cancel', [AdminOrderController::class, 'cancel'])->name('orders.cancel');
         Route::post('/orders/{order}/refund', [AdminOrderController::class, 'markAsRefunded'])->name('orders.refund');
+        Route::post('/orders/{order}/mark-paid', [AdminOrderController::class, 'markAsPaid'])->name('orders.mark-paid');
 
         Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
         Route::patch('/customers/{customer}/status', [CustomerController::class, 'updateStatus'])->name('customers.update-status');

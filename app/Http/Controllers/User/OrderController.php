@@ -53,7 +53,8 @@ class OrderController extends Controller
             'quantity' => 'required|integer|min:1|max:' . $product->stock,
             'delivery_date' => 'required|date|after_or_equal:today',
             'delivery_address' => 'required|string',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
+            'payment_method' => 'required|in:midtrans,tunai'
         ]);
 
         $dayOfWeek = date('N', strtotime($request->delivery_date));
@@ -84,47 +85,55 @@ class OrderController extends Controller
                 'subtotal' => $totalAmount,
             ]);
 
+            $isTunai = $request->payment_method === 'tunai';
+
             $transaction = Transaction::create([
                 'order_id' => $order->id,
                 'amount' => $totalAmount,
-                'method' => 'midtrans',
+                'method' => $isTunai ? 'tunai' : 'midtrans',
                 'status' => 'menunggu',
             ]);
 
-            // Set konfigurasi Midtrans
-            Config::$serverKey = config('midtrans.server_key');
-            Config::$isProduction = config('midtrans.is_production');
-            Config::$isSanitized = config('midtrans.is_sanitized');
-            Config::$is3ds = config('midtrans.is_3ds');
+            if (!$isTunai) {
+                // Set konfigurasi Midtrans
+                Config::$serverKey = config('midtrans.server_key');
+                Config::$isProduction = config('midtrans.is_production');
+                Config::$isSanitized = config('midtrans.is_sanitized');
+                Config::$is3ds = config('midtrans.is_3ds');
 
-            // Persiapkan parameter untuk dikirim ke Midtrans
-            $params = [
-                'transaction_details' => [
-                    'order_id' => $order->order_number,
-                    'gross_amount' => $totalAmount,
-                ],
-                'customer_details' => [
-                    'first_name' => Auth::user()->name,
-                    'email' => Auth::user()->email,
-                    'phone' => Auth::user()->phone ?? '',
-                ],
-                'item_details' => [
-                    [
-                        'id' => $product->id,
-                        'price' => $product->price,
-                        'quantity' => $request->quantity,
-                        'name' => $product->name,
+                // Persiapkan parameter untuk dikirim ke Midtrans
+                $params = [
+                    'transaction_details' => [
+                        'order_id' => $order->order_number,
+                        'gross_amount' => $totalAmount,
+                    ],
+                    'customer_details' => [
+                        'first_name' => Auth::user()->name,
+                        'email' => Auth::user()->email,
+                        'phone' => Auth::user()->phone ?? '',
+                    ],
+                    'item_details' => [
+                        [
+                            'id' => $product->id,
+                            'price' => $product->price,
+                            'quantity' => $request->quantity,
+                            'name' => $product->name,
+                        ]
                     ]
-                ]
-            ];
+                ];
 
-            // Dapatkan Snap Token dari Midtrans
-            $snapToken = Snap::getSnapToken($params);
+                // Dapatkan Snap Token dari Midtrans
+                $snapToken = Snap::getSnapToken($params);
 
-            // Simpan snap token ke dalam transaksi
-            $transaction->update(['snap_token' => $snapToken]);
+                // Simpan snap token ke dalam transaksi
+                $transaction->update(['snap_token' => $snapToken]);
+            }
 
             DB::commit();
+
+            if ($isTunai) {
+                return redirect()->route('user.orders.show', $order->id)->with('success', 'Pesanan COD berhasil dibuat! Menunggu konfirmasi dari Admin.');
+            }
 
             return redirect()->route('user.payment', $order->id)->with('success', 'Pesanan berhasil dibuat! Silakan selesaikan pembayaran.');
         } catch (\Exception $e) {

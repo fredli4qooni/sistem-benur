@@ -42,13 +42,27 @@
         <div class="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-100">
             <h2 class="text-base md:text-lg font-bold text-gray-800 border-b pb-2 md:pb-3 mb-3 md:mb-4">Metode Pembayaran</h2>
             <div class="space-y-3">
-                <div class="flex items-center p-3 border border-green-200 bg-green-50 rounded-lg">
-                    <i class="ph-fill ph-shield-check text-green-600 text-2xl"></i>
-                    <div class="ml-3">
-                        <span class="block font-bold text-gray-800">Midtrans Secure Payment</span>
-                        <span class="block text-xs text-gray-500 mt-0.5">Mendukung QRIS, Virtual Account, E-Wallet, dan lainnya.</span>
+                <label class="flex items-center p-3 border border-green-200 bg-green-50 rounded-lg cursor-pointer hover:bg-green-100 transition-colors">
+                    <input type="radio" name="payment_method" value="midtrans" checked class="w-5 h-5 text-[#1A6B3C] border-gray-300 focus:ring-[#1A6B3C]">
+                    <div class="ml-3 flex items-center">
+                        <i class="ph-fill ph-shield-check text-green-600 text-2xl mr-3"></i>
+                        <div>
+                            <span class="block font-bold text-gray-800">Pembayaran Online (Midtrans)</span>
+                            <span class="block text-xs text-gray-500 mt-0.5">Mendukung QRIS, Virtual Account, E-Wallet, dan lainnya.</span>
+                        </div>
                     </div>
-                </div>
+                </label>
+
+                <label class="flex items-center p-3 border border-gray-200 hover:border-orange-300 hover:bg-orange-50 bg-white rounded-lg cursor-pointer transition-colors">
+                    <input type="radio" name="payment_method" value="tunai" class="w-5 h-5 text-orange-500 border-gray-300 focus:ring-orange-500">
+                    <div class="ml-3 flex items-center">
+                        <i class="ph-fill ph-money text-orange-500 text-2xl mr-3"></i>
+                        <div>
+                            <span class="block font-bold text-gray-800">Uang Tunai (COD / Bayar di Tempat)</span>
+                            <span class="block text-xs text-gray-500 mt-0.5">Bayar tunai langsung kepada kurir saat pesanan tiba.</span>
+                        </div>
+                    </div>
+                </label>
             </div>
         </div>
     </div>

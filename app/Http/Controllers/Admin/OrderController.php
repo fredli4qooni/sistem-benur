@@ -33,10 +33,12 @@ class OrderController extends Controller
             $order->update(['status' => 'dikonfirmasi']);
 
             if ($order->transaction) {
-                $order->transaction->update([
-                    'status' => 'terkonfirmasi',
-                    'confirmed_at' => now()
-                ]);
+                if ($order->transaction->method !== 'tunai') {
+                    $order->transaction->update([
+                        'status' => 'terkonfirmasi',
+                        'confirmed_at' => now()
+                    ]);
+                }
             }
 
             foreach ($order->items as $item) {
@@ -56,6 +58,18 @@ class OrderController extends Controller
             DB::rollBack();
             return back()->with('error', $e->getMessage());
         }
+    }
+
+    public function markAsPaid(Order $order)
+    {
+        if ($order->transaction && $order->transaction->method === 'tunai' && $order->transaction->status === 'menunggu') {
+            $order->transaction->update([
+                'status' => 'terkonfirmasi',
+                'confirmed_at' => now()
+            ]);
+            return back()->with('success', 'Pembayaran tunai berhasil ditandai Lunas!');
+        }
+        return back()->with('error', 'Tidak dapat menandai lunas untuk transaksi ini.');
     }
 
     public function updateStatus(Request $request, Order $order)
