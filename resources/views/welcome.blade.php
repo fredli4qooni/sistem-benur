@@ -240,45 +240,53 @@
         </div>
     </div>
 
-    <div class="relative w-full h-[450px] md:h-[550px] border-t border-gray-200 bg-gray-100">
-        <!-- Shadow Inset untuk memberi kesan kedalaman -->
-        <div class="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)]"></div>
-        
-        <!-- Iframe Google Maps (Menampilkan area pesisir contoh) -->
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126442.2709669527!2d110.58434676100109!3d-6.592534571991871!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e711efa10fcd379%3A0xc3c582531cd869b2!2sJepara%2C%20Kabupaten%20Jepara%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
-            class="w-full h-full border-0 filter contrast-100" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-        
-        <!-- Info Card Floating di Atas Map -->
-        <div class="absolute bottom-6 md:bottom-12 left-1/2 transform -translate-x-1/2 md:left-12 md:translate-x-0 bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-white/50 w-[90%] md:w-[400px] z-20 transition-transform duration-300 hover:-translate-y-1">
-            <div class="flex items-center space-x-3 mb-4">
-                <div class="w-12 h-12 bg-green-50 border border-green-100 rounded-xl flex items-center justify-center">
-                    <i class="ph-fill ph-buildings text-2xl text-[#1A6B3C]"></i>
-                </div>
+    <div class="py-16 bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10">
                 <div>
-                    <h3 class="text-xl font-extrabold text-gray-900 tracking-tight">Kunjungi Fasilitas Kami</h3>
-                    <p class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Sentra Akuakultur</p>
+                    <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Lokasi Kami</h2>
+                    <p class="mt-2 text-gray-500 font-medium">Kunjungi pusat operasi dan pembenihan kami secara langsung.</p>
                 </div>
             </div>
-            
-            <p class="text-gray-500 text-sm mb-5 leading-relaxed font-medium">Lihat langsung kualitas air, sistem filtrasi, dan proses aklimatisasi benur berstandar ekspor di fasilitas pembenihan utama kami.</p>
-            
-            <div class="space-y-4 pt-4 border-t border-gray-100">
-                <div class="flex items-start">
-                    <div class="mt-0.5 bg-gray-50 p-1.5 rounded text-gray-400 mr-3 border border-gray-100">
-                        <i class="ph-fill ph-map-pin text-[#1A6B3C]"></i>
+
+            <div class="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-xl border border-gray-200 bg-gray-50 group">
+                <div class="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] rounded-3xl"></div>
+                
+                <!-- Iframe Google Maps -->
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126442.2709669527!2d110.58434676100109!3d-6.592534571991871!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e711efa10fcd379%3A0xc3c582531cd869b2!2sJepara%2C%20Kabupaten%20Jepara%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                    class="w-full h-full border-0 filter contrast-100 group-hover:contrast-125 transition-all duration-500" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                
+                <!-- Info Card Floating di Atas Map -->
+                <div class="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 md:left-8 md:translate-x-0 bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-gray-100 w-[90%] md:w-[380px] z-20">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 bg-green-50 border border-green-100 rounded-xl flex items-center justify-center">
+                            <i class="ph-fill ph-buildings text-2xl text-[#1A6B3C]"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-gray-900 tracking-tight">Kunjungi Fasilitas Kami</h3>
+                            <p class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Sentra Akuakultur</p>
+                        </div>
                     </div>
-                    <span class="text-sm font-semibold text-gray-700 leading-snug">Jl. Pesisir Tambak Udang No. 88, Kawasan Industri Akuakultur, Jawa Tengah</span>
-                </div>
-                <div class="flex items-start">
-                    <div class="mt-0.5 bg-gray-50 p-1.5 rounded text-gray-400 mr-3 border border-gray-100">
-                        <i class="ph-fill ph-phone text-[#1A6B3C]"></i>
+                    
+                    <div class="space-y-4 pt-4 border-t border-gray-100">
+                        <div class="flex items-start">
+                            <div class="mt-0.5 bg-gray-50 p-1.5 rounded text-gray-400 mr-3 border border-gray-100">
+                                <i class="ph-fill ph-map-pin text-[#1A6B3C]"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700 leading-snug">Jl. Pesisir Tambak Udang No. 88, Kawasan Industri Akuakultur, Jawa Tengah</span>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="mt-0.5 bg-gray-50 p-1.5 rounded text-gray-400 mr-3 border border-gray-100">
+                                <i class="ph-fill ph-phone text-[#1A6B3C]"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-700">+62 812-3456-7890</span>
+                        </div>
                     </div>
-                    <span class="text-sm font-semibold text-gray-700">+62 812-3456-7890</span>
                 </div>
             </div>
         </div>
