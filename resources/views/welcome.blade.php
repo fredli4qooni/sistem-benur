@@ -335,7 +335,7 @@
             AOS.init({
                 duration: 800, // Durasi animasi (ms)
                 easing: 'ease-out-cubic', // Gaya kelengkungan animasi yang elegan
-                once: true, // Animasi hanya berjalan sekali saat di-scroll
+                once: false, // Animasi akan berjalan setiap kali elemen masuk layar (scroll naik/turun)
                 offset: 50, // Munculkan elemen ketika jaraknya 50px dari viewport
             });
         });
