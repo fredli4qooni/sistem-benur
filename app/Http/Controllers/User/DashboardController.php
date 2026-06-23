@@ -11,8 +11,23 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $filter = $request->query('filter', '7H'); // Default 7 Hari
+
+        // Menentukan batas waktu awal berdasarkan filter
+        $startDate = now();
+        if ($filter === '7H') {
+            $startDate = now()->subDays(6);
+        } elseif ($filter === '1B') {
+            $startDate = now()->subMonth();
+        } elseif ($filter === '3B') {
+            $startDate = now()->subMonths(3);
+        } else {
+            $filter = '7H';
+            $startDate = now()->subDays(6);
+        }
+
         // 1. Ambil 4 Produk Terpopuler (Berdasarkan jumlah terjual terbanyak)
         $topProducts = Product::where('status', 1)
             ->withSum('orderItems as total_sold', 'quantity')
@@ -24,14 +39,18 @@ class DashboardController extends Controller
         $currentPrices = Product::where('status', 1)->get();
 
         // 3. Siapkan Data untuk Grafik Tren Harga (Mengambil produk aktif saja)
-        // Formatnya akan dikelompokkan per nama produk agar bisa jadi beberapa garis di Chart
         $products = Product::where('status', 1)->has('priceHistories')->with('priceHistories')->get();
         
         $chartData = [];
         $allDates = [];
 
-        // Mengumpulkan semua tanggal unik dari perubahan harga untuk sumbu X (Bawah)
-        $histories = PriceHistory::orderBy('recorded_at', 'asc')->get();
+        // Masukkan tanggal awal ke sumbu X agar chart membentang dari titik mulai yang tepat
+        $allDates[] = $startDate->format('d M');
+
+        // Mengumpulkan semua tanggal unik dari perubahan harga dalam rentang waktu filter
+        $histories = PriceHistory::where('recorded_at', '>=', $startDate->startOfDay())
+                        ->orderBy('recorded_at', 'asc')->get();
+
         foreach ($histories as $history) {
             $dateFormatted = \Carbon\Carbon::parse($history->recorded_at)->format('d M');
             if (!in_array($dateFormatted, $allDates)) {
@@ -41,7 +60,7 @@ class DashboardController extends Controller
 
         // Tambahkan hari ini agar tren harga yang baru ditambah tetap jadi garis
         $todayFormatted = now()->format('d M');
-        if (!in_array($todayFormatted, $allDates) && count($allDates) > 0) {
+        if (!in_array($todayFormatted, $allDates)) {
             $allDates[] = $todayFormatted;
         }
 
@@ -53,8 +72,19 @@ class DashboardController extends Controller
         foreach ($products as $product) {
             $productPrices = [];
             
-            // Ambil harga terawal (historis pertama) sebagai baseline agar garis selalu dimulai dari ujung kiri grafik
-            $lastKnownPrice = $product->priceHistories->sortBy('recorded_at')->first()->price ?? 0;
+            // Cari harga baseline: harga terakhir yang tercatat sebelum atau pada tanggal awal filter
+            $baselineHistory = $product->priceHistories()
+                                ->where('recorded_at', '<=', $startDate->endOfDay())
+                                ->orderBy('recorded_at', 'desc')
+                                ->first();
+
+            // Jika tidak ada riwayat sebelum filter, ambil riwayat pertama kalinya
+            if (!$baselineHistory) {
+                $baselineHistory = $product->priceHistories->sortBy('recorded_at')->first();
+            }
+
+            $lastKnownPrice = $baselineHistory ? $baselineHistory->price : 0;
+            $baselinePrice = $lastKnownPrice;
 
             foreach ($allDates as $date) {
                 // Cari apakah ada perubahan harga di tanggal ini
@@ -69,14 +99,9 @@ class DashboardController extends Controller
                 $productPrices[] = $lastKnownPrice;
             }
 
-            // Hitung selisih harga (naik/turun)
-            $priceDiff = 0;
-            if ($product->priceHistories->count() > 1) {
-                $sortedHistories = $product->priceHistories->sortBy('recorded_at')->values();
-                $latest = $sortedHistories->last();
-                $previous = $sortedHistories->get($sortedHistories->count() - 2);
-                $priceDiff = $latest->price - $previous->price;
-            }
+            // Hitung selisih harga (naik/turun) berdasarkan baseline di awal rentang filter
+            $currentPrice = $product->price;
+            $priceDiff = $currentPrice - $baselinePrice;
 
             $color = $colors[$colorIndex % count($colors)];
             $colorIndex++;
@@ -91,6 +116,6 @@ class DashboardController extends Controller
             ];
         }
 
-        return view('user.dashboard', compact('topProducts', 'currentPrices', 'allDates', 'chartData'));
+        return view('user.dashboard', compact('topProducts', 'currentPrices', 'allDates', 'chartData', 'filter'));
     }
 }

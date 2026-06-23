@@ -27,9 +27,9 @@
             </div>
             <div class="flex items-center space-x-2">
                 <div class="flex items-center bg-gray-50 border border-gray-100 rounded-lg p-0.5 hidden sm:flex">
-                    <button class="px-2.5 py-1 text-xs font-bold bg-white text-gray-800 shadow-sm rounded-md">7H</button>
-                    <button class="px-2.5 py-1 text-xs font-medium text-gray-500 hover:text-gray-700">1B</button>
-                    <button class="px-2.5 py-1 text-xs font-medium text-gray-500 hover:text-gray-700">3B</button>
+                    <a href="{{ route('user.dashboard', ['filter' => '7H']) }}" class="px-2.5 py-1 text-xs {{ $filter === '7H' ? 'font-bold bg-white text-gray-800 shadow-sm' : 'font-medium text-gray-500 hover:text-gray-700' }} rounded-md">7H</a>
+                    <a href="{{ route('user.dashboard', ['filter' => '1B']) }}" class="px-2.5 py-1 text-xs {{ $filter === '1B' ? 'font-bold bg-white text-gray-800 shadow-sm' : 'font-medium text-gray-500 hover:text-gray-700' }} rounded-md">1B</a>
+                    <a href="{{ route('user.dashboard', ['filter' => '3B']) }}" class="px-2.5 py-1 text-xs {{ $filter === '3B' ? 'font-bold bg-white text-gray-800 shadow-sm' : 'font-medium text-gray-500 hover:text-gray-700' }} rounded-md">3B</a>
                 </div>
                 <span class="text-[10px] md:text-xs font-medium text-green-700 bg-green-50 border border-green-100 px-2 py-1 rounded-md flex items-center">
                     <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 animate-pulse"></span> Live
