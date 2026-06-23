@@ -33,17 +33,21 @@ class DashboardController extends Controller
         // Mengumpulkan semua tanggal unik dari perubahan harga untuk sumbu X (Bawah)
         $histories = PriceHistory::orderBy('recorded_at', 'asc')->get();
         foreach ($histories as $history) {
-            $dateFormatted = \Carbon\Carbon::parse($history->recorded_at)->format('d M Y');
+            $dateFormatted = \Carbon\Carbon::parse($history->recorded_at)->format('d M');
             if (!in_array($dateFormatted, $allDates)) {
                 $allDates[] = $dateFormatted;
             }
         }
 
         // Tambahkan hari ini agar tren harga yang baru ditambah tetap jadi garis
-        $todayFormatted = now()->format('d M Y');
+        $todayFormatted = now()->format('d M');
         if (!in_array($todayFormatted, $allDates) && count($allDates) > 0) {
             $allDates[] = $todayFormatted;
         }
+
+        // Palette warna yang lebih cerah & modern (Biru, Hijau, Ungu, Orange, Merah)
+        $colors = ['#0ea5e9', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+        $colorIndex = 0;
 
         // Menyusun data Y (Harga) per produk
         foreach ($products as $product) {
@@ -53,7 +57,7 @@ class DashboardController extends Controller
             foreach ($allDates as $date) {
                 // Cari apakah ada perubahan harga di tanggal ini
                 $historyOnDate = $product->priceHistories->filter(function($item) use ($date) {
-                    return \Carbon\Carbon::parse($item->recorded_at)->format('d M Y') === $date;
+                    return \Carbon\Carbon::parse($item->recorded_at)->format('d M') === $date;
                 })->last();
 
                 if ($historyOnDate) {
@@ -63,15 +67,25 @@ class DashboardController extends Controller
                 $productPrices[] = $lastKnownPrice;
             }
 
-            // Generate warna random untuk setiap garis produk
-            $color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+            // Hitung selisih harga (naik/turun)
+            $priceDiff = 0;
+            if ($product->priceHistories->count() > 1) {
+                $sortedHistories = $product->priceHistories->sortBy('recorded_at')->values();
+                $latest = $sortedHistories->last();
+                $previous = $sortedHistories->get($sortedHistories->count() - 2);
+                $priceDiff = $latest->price - $previous->price;
+            }
+
+            $color = $colors[$colorIndex % count($colors)];
+            $colorIndex++;
 
             $chartData[] = [
                 'label' => $product->name,
                 'data' => $productPrices,
                 'borderColor' => $color,
-                'fill' => false,
-                'tension' => 0.1
+                'backgroundColor' => $color, // Disimpan untuk gradient di JS
+                'currentPrice' => $product->price,
+                'priceDiff' => $priceDiff
             ];
         }
 

@@ -25,10 +25,35 @@
                 <i class="ph ph-chart-line-up text-lg text-gray-400"></i>
                 <h2 class="text-sm md:text-base font-bold text-gray-900">Grafik Tren Harga</h2>
             </div>
-            <span class="text-[10px] md:text-xs font-medium text-green-700 bg-green-50 border border-green-100 px-2 py-1 rounded-md flex items-center">
-                <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 animate-pulse"></span> Live
-            </span>
+            <div class="flex items-center space-x-2">
+                <div class="flex items-center bg-gray-50 border border-gray-100 rounded-lg p-0.5 hidden sm:flex">
+                    <button class="px-2.5 py-1 text-xs font-bold bg-white text-gray-800 shadow-sm rounded-md">7H</button>
+                    <button class="px-2.5 py-1 text-xs font-medium text-gray-500 hover:text-gray-700">1B</button>
+                    <button class="px-2.5 py-1 text-xs font-medium text-gray-500 hover:text-gray-700">3B</button>
+                </div>
+                <span class="text-[10px] md:text-xs font-medium text-green-700 bg-green-50 border border-green-100 px-2 py-1 rounded-md flex items-center">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 animate-pulse"></span> Live
+                </span>
+            </div>
         </div>
+
+        <!-- Custom HTML Legend -->
+        <div class="flex flex-wrap gap-3 mb-4">
+            @foreach($chartData as $dataset)
+                <div class="flex items-center px-3 py-1.5 rounded-full border text-xs font-semibold" style="border-color: {{ $dataset['borderColor'] }}30; background-color: {{ $dataset['borderColor'] }}0A;">
+                    <span class="w-2.5 h-2.5 rounded-full mr-2" style="background-color: {{ $dataset['borderColor'] }};"></span>
+                    <span class="text-gray-700 mr-2">{{ $dataset['label'] }}</span>
+                    <span style="color: {{ $dataset['borderColor'] }};">Rp {{ number_format($dataset['currentPrice'], 0, ',', '.') }}</span>
+                    
+                    @if($dataset['priceDiff'] < 0)
+                        <span class="ml-2 text-red-500 font-bold"><i class="ph-bold ph-caret-down text-[10px]"></i> Rp {{ number_format(abs($dataset['priceDiff']), 0, ',', '.') }}</span>
+                    @elseif($dataset['priceDiff'] > 0)
+                        <span class="ml-2 text-green-500 font-bold"><i class="ph-bold ph-caret-up text-[10px]"></i> Rp {{ number_format($dataset['priceDiff'], 0, ',', '.') }}</span>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+
         <div class="flex-1 h-56 md:h-72 min-h-[14rem] md:min-h-[18rem]">
             <canvas id="priceTrendChart"></canvas>
         </div>
@@ -149,13 +174,27 @@
 
         // Modifikasi dataset agar seragam dengan desain minimalis
         datasets = datasets.map(dataset => {
-            dataset.borderWidth = 2;
-            dataset.pointRadius = 4;
+            dataset.borderWidth = 2.5;
+            
+            // Buat gradient untuk area di bawah garis
+            let gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, dataset.backgroundColor + '33'); // 20% opacity
+            gradient.addColorStop(1, dataset.backgroundColor + '00'); // 0% opacity
+            
+            dataset.backgroundColor = gradient;
+            dataset.fill = true;
+            dataset.tension = 0.4; // Melengkung halus seperti referensi
+
+            // Titik hanya tampil saat di-hover atau di ujung akhir
+            dataset.pointRadius = function(context) {
+                const index = context.dataIndex;
+                const count = context.dataset.data.length;
+                return index === count - 1 ? 5 : 0; 
+            };
             dataset.pointHoverRadius = 6;
-            dataset.pointBackgroundColor = dataset.borderColor;
-            dataset.pointBorderColor = '#ffffff';
-            dataset.pointBorderWidth = 1.5;
-            dataset.tension = 0; // Garis lurus tegas tanpa lengkungan
+            dataset.pointBackgroundColor = '#ffffff';
+            dataset.pointBorderColor = dataset.borderColor;
+            dataset.pointBorderWidth = 2.5;
             return dataset;
         });
 
@@ -170,12 +209,17 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'top',
-                        labels: { boxWidth: 12, usePointStyle: true, font: { size: 11 } }
+                        display: false // Sembunyikan legenda bawaan karena kita pakai HTML kustom
                     },
                     tooltip: {
-                        backgroundColor: '#1f2937',
+                        backgroundColor: '#ffffff',
+                        titleColor: '#1f2937',
+                        bodyColor: '#4b5563',
+                        borderColor: '#e5e7eb',
+                        borderWidth: 1,
                         padding: 10,
+                        boxPadding: 4,
+                        usePointStyle: true,
                         callbacks: {
                             label: function(context) {
                                 let label = context.dataset.label || '';
@@ -195,13 +239,13 @@
                     },
                     y: {
                         grid: { color: '#f3f4f6' },
-                        border: { dash: [4, 4] },
+                        border: { dash: [4, 4], display: false },
                         beginAtZero: false,
                         ticks: {
                             font: { size: 11 },
                             color: '#9ca3af',
                             callback: function(value) {
-                                return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                                return 'Rp ' + (value / 1000) + 'rb'; // Format 'Rp 26rb'
                             }
                         }
                     }
