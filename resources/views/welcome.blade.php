@@ -110,7 +110,7 @@
         </div>
     </nav>
 
-    <div class="relative pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-gray-100" style="background-image: url('{{ asset('images/bg-hero.jpg') }}'); background-size: cover; background-position: center;">
+    <div class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-gray-200 bg-gray-100" style="background-image: url('{{ asset('images/bg-hero.jpg') }}'); background-size: cover; background-position: center;">
         <!-- Aquarium Bubbles Effect -->
         <div class="bubbles-container">
             <div class="bubble bubble-sm" style="left: 10%; animation-duration: 8s, 3s; animation-delay: 0s, 0s;"><i class="ph-fill ph-shrimp"></i></div>
@@ -197,13 +197,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Wave Shape Divider -->
-        <div class="absolute -bottom-[1px] left-0 w-full overflow-hidden leading-[0] z-20 pointer-events-none">
-            <svg class="relative block w-full h-[60px] md:h-[120px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
-                <path fill="#ffffff" d="M0,160L48,170.7C96,181,192,203,288,197.3C384,192,480,160,576,165.3C672,171,768,213,864,224C960,235,1056,213,1152,192C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-            </svg>
         </div>
     </div>
 
