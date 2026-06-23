@@ -334,7 +334,7 @@
                 
                 <!-- Iframe Google Maps -->
                 <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126442.2709669527!2d110.58434676100109!3d-6.592534571991871!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e711efa10fcd379%3A0xc3c582531cd869b2!2sJepara%2C%20Kabupaten%20Jepara%2C%20Jawa%20Tengah!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                    src="https://www.google.com/maps?q=Bumi+Dipasena+Makmur,+Rawajitu+Timur,+Tulang+Bawang+Regency,+Lampung&output=embed" 
                     class="w-full h-full border-0 filter contrast-100 group-hover:contrast-125 transition-all duration-500" 
                     allowfullscreen="" 
                     loading="lazy" 
