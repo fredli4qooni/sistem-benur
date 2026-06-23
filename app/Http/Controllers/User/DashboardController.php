@@ -52,7 +52,9 @@ class DashboardController extends Controller
         // Menyusun data Y (Harga) per produk
         foreach ($products as $product) {
             $productPrices = [];
-            $lastKnownPrice = null;
+            
+            // Ambil harga terawal (historis pertama) sebagai baseline agar garis selalu dimulai dari ujung kiri grafik
+            $lastKnownPrice = $product->priceHistories->sortBy('recorded_at')->first()->price ?? 0;
 
             foreach ($allDates as $date) {
                 // Cari apakah ada perubahan harga di tanggal ini
