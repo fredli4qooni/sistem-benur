@@ -9,11 +9,14 @@
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body class="antialiased bg-white text-gray-900 font-sans selection:bg-[#1A6B3C] selection:text-white">
 
-    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200 fixed w-full z-50 top-0 transition-all">
+    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200 fixed w-full z-50 top-0 transition-all" data-aos="fade-down" data-aos-duration="600">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center space-x-2">
@@ -46,7 +49,7 @@
 
     <div class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-gray-50 border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center relative z-10">
-            <div class="lg:w-1/2 text-center lg:text-left pr-0 lg:pr-12">
+            <div class="lg:w-1/2 text-center lg:text-left pr-0 lg:pr-12" data-aos="fade-right" data-aos-delay="200">
                 <span class="inline-flex items-center py-1 px-3 rounded-full bg-white border border-green-200 text-green-700 text-xs font-bold tracking-wide mb-6 shadow-sm">
                     <i class="ph-fill ph-rocket-launch mr-1.5"></i> B2B & B2C PLATFORM
                 </span>
@@ -72,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="lg:w-1/2 mt-16 lg:mt-0 hidden md:block relative z-20">
+            <div class="lg:w-1/2 mt-16 lg:mt-0 hidden md:block relative z-20" data-aos="fade-left" data-aos-delay="400">
                 <div class="relative w-full max-w-lg mx-auto">
                     <!-- Ornamen Dekoratif di Belakang Slider -->
                     <div class="absolute -inset-4 bg-gradient-to-tr from-[#1A6B3C]/20 to-emerald-400/20 rounded-3xl transform rotate-3 blur-sm"></div>
@@ -122,13 +125,13 @@
 
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16" data-aos="fade-up">
                 <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Keunggulan Ekosistem Kami</h2>
                 <p class="mt-4 text-lg text-gray-500 max-w-2xl mx-auto font-medium">Dirancang khusus untuk memudahkan operasional pembudidaya dari pemesanan hingga barang tiba di lokasi.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#1A6B3C] hover:shadow-md transition-all duration-300 group">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-[#1A6B3C] hover:shadow-md transition-all duration-300 group" data-aos="fade-up" data-aos-delay="100">
                     <div class="w-14 h-14 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-500 group-hover:bg-green-50 group-hover:text-[#1A6B3C] group-hover:border-green-100 transition-colors mb-6">
                         <i class="ph ph-chart-line-up text-3xl"></i>
                     </div>
@@ -136,7 +139,7 @@
                     <p class="text-gray-500 text-sm leading-relaxed font-medium">Pantau grafik pergerakan harga pasar benur secara transparan langsung dari dashboard Anda sebelum memutuskan untuk membeli.</p>
                 </div>
 
-                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all duration-300 group">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all duration-300 group" data-aos="fade-up" data-aos-delay="200">
                     <div class="w-14 h-14 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-500 group-hover:bg-blue-50 group-hover:text-blue-600 group-hover:border-blue-100 transition-colors mb-6">
                         <i class="ph ph-calendar-check text-3xl"></i>
                     </div>
@@ -144,7 +147,7 @@
                     <p class="text-gray-500 text-sm leading-relaxed font-medium">Sistem pengiriman terjadwal (Senin & Kamis) memastikan proses aklimatisasi benur terencana dengan baik saat tiba di tambak.</p>
                 </div>
 
-                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-orange-500 hover:shadow-md transition-all duration-300 group">
+                <div class="bg-white p-8 rounded-2xl border border-gray-200 hover:border-orange-500 hover:shadow-md transition-all duration-300 group" data-aos="fade-up" data-aos-delay="300">
                     <div class="w-14 h-14 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-500 group-hover:bg-orange-50 group-hover:text-orange-500 group-hover:border-orange-100 transition-colors mb-6">
                         <i class="ph ph-qr-code text-3xl"></i>
                     </div>
@@ -157,7 +160,7 @@
 
     <div id="katalog" class="py-20 bg-gray-50 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12" data-aos="fade-up">
                 <div>
                     <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Katalog Unggulan Kami</h2>
                     <p class="mt-2 text-gray-500 font-medium">Pilihan benur terbaik dengan harga pasar update hari ini.</p>
@@ -171,7 +174,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @forelse($featuredProducts as $product)
-                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200 flex flex-col overflow-hidden group">
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200 flex flex-col overflow-hidden group" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
 
                     <div class="relative h-48 bg-gray-50 border-b border-gray-100 flex-shrink-0 overflow-hidden">
                         @if($product->image)
@@ -224,7 +227,7 @@
             </div>
 
             @guest
-            <div class="mt-16 bg-[#1A6B3C] rounded-2xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between shadow-lg border border-green-800">
+            <div class="mt-16 bg-[#1A6B3C] rounded-2xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between shadow-lg border border-green-800" data-aos="zoom-in">
                 <div class="text-center sm:text-left mb-6 sm:mb-0">
                     <h3 class="text-2xl font-extrabold text-white tracking-tight">Siap Memulai Budidaya?</h3>
                     <p class="text-green-100 mt-2 text-sm max-w-md font-medium">Bergabunglah dengan ekosistem digital kami dan nikmati kemudahan transaksi benur yang transparan.</p>
@@ -242,14 +245,14 @@
 
     <div class="py-16 bg-white border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10" data-aos="fade-up">
                 <div>
                     <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Lokasi Kami</h2>
                     <p class="mt-2 text-gray-500 font-medium">Kunjungi pusat operasi dan pembenihan kami secara langsung.</p>
                 </div>
             </div>
 
-            <div class="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-xl border border-gray-200 bg-gray-50 group">
+            <div class="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-xl border border-gray-200 bg-gray-50 group" data-aos="fade-up" data-aos-delay="100">
                 <div class="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] rounded-3xl"></div>
                 
                 <!-- Iframe Google Maps -->
@@ -307,8 +310,10 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Swiper
             var swiper = new Swiper(".heroSwiper", {
                 effect: "fade",
                 autoplay: {
@@ -324,6 +329,14 @@
                     prevEl: ".swiper-button-prev",
                 },
                 loop: true,
+            });
+
+            // Initialize AOS Animation
+            AOS.init({
+                duration: 800, // Durasi animasi (ms)
+                easing: 'ease-out-cubic', // Gaya kelengkungan animasi yang elegan
+                once: true, // Animasi hanya berjalan sekali saat di-scroll
+                offset: 50, // Munculkan elemen ketika jaraknya 50px dari viewport
             });
         });
     </script>
