@@ -41,15 +41,31 @@
         }
         .bubble {
             position: absolute;
-            bottom: -50px;
-            background: linear-gradient(135deg, rgba(26, 107, 60, 0.05), rgba(26, 107, 60, 0.15));
-            border: 1px solid rgba(26, 107, 60, 0.2);
+            bottom: -80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Efek 3D Gelembung */
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.6), rgba(26, 107, 60, 0.05) 50%, rgba(26, 107, 60, 0.2) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 50%;
-            backdrop-filter: blur(1px);
+            box-shadow: inset -5px -5px 15px rgba(26, 107, 60, 0.1), 
+                        inset 5px 5px 10px rgba(255, 255, 255, 0.6), 
+                        0 4px 10px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(2px);
             animation: rise linear infinite, sway ease-in-out infinite alternate;
         }
+        .bubble i {
+            color: rgba(26, 107, 60, 0.5); /* Warna hijau udang transparan */
+            filter: drop-shadow(0 2px 2px rgba(255,255,255,0.8));
+        }
+        /* Ukuran Gelembung */
+        .bubble-sm { width: 35px; height: 35px; font-size: 16px; }
+        .bubble-md { width: 55px; height: 55px; font-size: 26px; }
+        .bubble-lg { width: 75px; height: 75px; font-size: 38px; }
+        
         @keyframes rise {
-            0% { bottom: -50px; opacity: 0; }
+            0% { bottom: -80px; opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { bottom: 110%; opacity: 0; }
@@ -97,16 +113,16 @@
     <div class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-gray-50 border-b border-gray-200">
         <!-- Aquarium Bubbles Effect -->
         <div class="bubbles-container">
-            <div class="bubble" style="left: 10%; width: 20px; height: 20px; animation-duration: 8s, 3s; animation-delay: 0s, 0s;"></div>
-            <div class="bubble" style="left: 20%; width: 35px; height: 35px; animation-duration: 11s, 4s; animation-delay: 1s, 1s;"></div>
-            <div class="bubble" style="left: 35%; width: 15px; height: 15px; animation-duration: 6s, 2s; animation-delay: 2s, 0.5s;"></div>
-            <div class="bubble" style="left: 50%; width: 45px; height: 45px; animation-duration: 14s, 5s; animation-delay: 0s, 2s;"></div>
-            <div class="bubble" style="left: 65%; width: 25px; height: 25px; animation-duration: 9s, 3.5s; animation-delay: 3s, 1.5s;"></div>
-            <div class="bubble" style="left: 80%; width: 18px; height: 18px; animation-duration: 7s, 3s; animation-delay: 1.5s, 0s;"></div>
-            <div class="bubble" style="left: 90%; width: 30px; height: 30px; animation-duration: 10s, 4s; animation-delay: 4s, 2s;"></div>
-            <div class="bubble" style="left: 5%; width: 12px; height: 12px; animation-duration: 5s, 2.5s; animation-delay: 3s, 1s;"></div>
-            <div class="bubble" style="left: 45%; width: 28px; height: 28px; animation-duration: 12s, 4.5s; animation-delay: 5s, 0.5s;"></div>
-            <div class="bubble" style="left: 75%; width: 22px; height: 22px; animation-duration: 8.5s, 3.2s; animation-delay: 2.5s, 1.2s;"></div>
+            <div class="bubble bubble-sm" style="left: 10%; animation-duration: 8s, 3s; animation-delay: 0s, 0s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-lg" style="left: 20%; animation-duration: 11s, 4s; animation-delay: 1s, 1s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-sm" style="left: 35%; animation-duration: 6s, 2s; animation-delay: 2s, 0.5s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-md" style="left: 50%; animation-duration: 14s, 5s; animation-delay: 0s, 2s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-lg" style="left: 65%; animation-duration: 9s, 3.5s; animation-delay: 3s, 1.5s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-sm" style="left: 80%; animation-duration: 7s, 3s; animation-delay: 1.5s, 0s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-md" style="left: 90%; animation-duration: 10s, 4s; animation-delay: 4s, 2s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-sm" style="left: 5%; animation-duration: 5s, 2.5s; animation-delay: 3s, 1s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-md" style="left: 45%; animation-duration: 12s, 4.5s; animation-delay: 5s, 0.5s;"><i class="ph-fill ph-shrimp"></i></div>
+            <div class="bubble bubble-lg" style="left: 75%; animation-duration: 8.5s, 3.2s; animation-delay: 2.5s, 1.2s;"><i class="ph-fill ph-shrimp"></i></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center relative z-10">
