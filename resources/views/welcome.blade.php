@@ -110,7 +110,10 @@
         </div>
     </nav>
 
-    <div class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-gray-50 border-b border-gray-200">
+    <div class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-gray-200 bg-gray-100" style="background-image: url('{{ asset('images/bg-hero.jpg') }}'); background-size: cover; background-position: center;">
+        <!-- Overlay to ensure text readability -->
+        <div class="absolute inset-0 bg-white/85 backdrop-blur-[1px]"></div>
+
         <!-- Aquarium Bubbles Effect -->
         <div class="bubbles-container">
             <div class="bubble bubble-sm" style="left: 10%; animation-duration: 8s, 3s; animation-delay: 0s, 0s;"><i class="ph-fill ph-shrimp"></i></div>
