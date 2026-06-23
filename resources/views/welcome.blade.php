@@ -358,7 +358,10 @@
                             <div class="mt-0.5 bg-gray-50 p-1.5 rounded text-gray-400 mr-3 border border-gray-100">
                                 <i class="ph-fill ph-map-pin text-[#1A6B3C]"></i>
                             </div>
-                            <span class="text-sm font-semibold text-gray-700 leading-snug">Jl. Pesisir Tambak Udang No. 88, Kawasan Industri Akuakultur, Jawa Tengah</span>
+                            <a href="https://maps.app.goo.gl/LabYrd1un1pHagb27" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-gray-700 leading-snug hover:text-[#1A6B3C] transition-colors">
+                                Bumi Dipasena Makmur<br>
+                                Rawajitu Timur, Tulang Bawang Regency, Lampung
+                            </a>
                         </div>
                         <div class="flex items-start">
                             <div class="mt-0.5 bg-gray-50 p-1.5 rounded text-gray-400 mr-3 border border-gray-100">
