@@ -122,7 +122,6 @@
                         <option value="dikonfirmasi" {{ $order->status === 'dikonfirmasi' ? 'selected' : '' }}>Dikonfirmasi</option>
                         <option value="disiapkan" {{ $order->status === 'disiapkan' ? 'selected' : '' }}>Sedang Disiapkan</option>
                         <option value="dikirim" {{ $order->status === 'dikirim' ? 'selected' : '' }}>Dalam Pengiriman</option>
-                        <option value="selesai" {{ $order->status === 'selesai' ? 'selected' : '' }}>Pesanan Selesai</option>
                     </select>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition text-sm font-semibold">
                         Update
