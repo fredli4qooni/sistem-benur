@@ -10,8 +10,24 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
-    <!-- AOS Animation CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom Scroll Reveal CSS -->
+    <style>
+        [data-aos] {
+            opacity: 0;
+            transition-property: opacity, transform;
+            transition-duration: 800ms;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        [data-aos].aos-animate {
+            opacity: 1;
+            transform: translate(0) scale(1);
+        }
+        [data-aos="fade-up"]:not(.aos-animate) { transform: translateY(40px); }
+        [data-aos="fade-down"]:not(.aos-animate) { transform: translateY(-40px); }
+        [data-aos="fade-left"]:not(.aos-animate) { transform: translateX(40px); }
+        [data-aos="fade-right"]:not(.aos-animate) { transform: translateX(-40px); }
+        [data-aos="zoom-in"]:not(.aos-animate) { transform: scale(0.9); }
+    </style>
 </head>
 
 <body class="antialiased bg-white text-gray-900 font-sans selection:bg-[#1A6B3C] selection:text-white">
@@ -310,7 +326,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Initialize Swiper
@@ -331,14 +346,32 @@
                 loop: true,
             });
 
-            // Initialize AOS Animation
-            AOS.init({
-                duration: 800, // Durasi animasi (ms)
-                easing: 'ease-out-cubic', // Gaya kelengkungan animasi yang elegan
-                once: false, // Animasi akan berjalan setiap kali elemen masuk layar (scroll naik/turun)
-                mirror: true, // Memicu animasi keluar/masuk saat elemen melewati batas atas/bawah layar
-                offset: 50, // Munculkan elemen ketika jaraknya 50px dari viewport
-            });
+            // Custom Intersection Observer (Animate on Both Directions)
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // Memicu animasi saat 15% elemen terlihat
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const el = entry.target;
+                    
+                    // Terapkan delay jika ada
+                    if (el.hasAttribute('data-aos-delay')) {
+                        el.style.transitionDelay = el.getAttribute('data-aos-delay') + 'ms';
+                    }
+
+                    if (entry.isIntersecting) {
+                        el.classList.add('aos-animate');
+                    } else {
+                        // Kunci utama: hilangkan class agar hilang kembali saat scroll ke luar
+                        el.classList.remove('aos-animate');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
         });
     </script>
 </body>
