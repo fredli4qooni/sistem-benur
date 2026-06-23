@@ -336,6 +336,7 @@
                 duration: 800, // Durasi animasi (ms)
                 easing: 'ease-out-cubic', // Gaya kelengkungan animasi yang elegan
                 once: false, // Animasi akan berjalan setiap kali elemen masuk layar (scroll naik/turun)
+                mirror: true, // Memicu animasi keluar/masuk saat elemen melewati batas atas/bawah layar
                 offset: 50, // Munculkan elemen ketika jaraknya 50px dari viewport
             });
         });
