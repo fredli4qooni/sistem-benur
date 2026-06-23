@@ -436,6 +436,21 @@
             }, observerOptions);
 
             document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+
+            // Force 100% Scale on Desktop/Laptop (Counteract Windows Display Scaling 125% / 150%)
+            function forceNativeScale() {
+                const isWindows = navigator.userAgent.toLowerCase().indexOf('windows') !== -1;
+                if (isWindows && window.innerWidth >= 1024) {
+                    const ratio = window.devicePixelRatio || 1;
+                    // Jika layar user di-zoom oleh sistem (misal 150% = 1.5), kita set CSS zoom ke kebalikannya
+                    document.body.style.zoom = 1 / ratio;
+                } else {
+                    document.body.style.zoom = 1;
+                }
+            }
+            // Terapkan saat pertama kali dimuat dan saat layar di-resize (atau zoom diubah)
+            forceNativeScale();
+            window.addEventListener('resize', forceNativeScale);
         });
     </script>
 </body>
