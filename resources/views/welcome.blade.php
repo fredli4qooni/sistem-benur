@@ -27,6 +27,37 @@
         [data-aos="fade-left"]:not(.aos-animate) { transform: translateX(40px); }
         [data-aos="fade-right"]:not(.aos-animate) { transform: translateX(-40px); }
         [data-aos="zoom-in"]:not(.aos-animate) { transform: scale(0.9); }
+
+        /* Aquarium Bubbles Animation */
+        .bubbles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Di bawah konten utama (z-10) */
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            background: linear-gradient(135deg, rgba(26, 107, 60, 0.05), rgba(26, 107, 60, 0.15));
+            border: 1px solid rgba(26, 107, 60, 0.2);
+            border-radius: 50%;
+            backdrop-filter: blur(1px);
+            animation: rise linear infinite, sway ease-in-out infinite alternate;
+        }
+        @keyframes rise {
+            0% { bottom: -50px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { bottom: 110%; opacity: 0; }
+        }
+        @keyframes sway {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(30px); }
+        }
     </style>
 </head>
 
@@ -64,6 +95,20 @@
     </nav>
 
     <div class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-gray-50 border-b border-gray-200">
+        <!-- Aquarium Bubbles Effect -->
+        <div class="bubbles-container">
+            <div class="bubble" style="left: 10%; width: 20px; height: 20px; animation-duration: 8s, 3s; animation-delay: 0s, 0s;"></div>
+            <div class="bubble" style="left: 20%; width: 35px; height: 35px; animation-duration: 11s, 4s; animation-delay: 1s, 1s;"></div>
+            <div class="bubble" style="left: 35%; width: 15px; height: 15px; animation-duration: 6s, 2s; animation-delay: 2s, 0.5s;"></div>
+            <div class="bubble" style="left: 50%; width: 45px; height: 45px; animation-duration: 14s, 5s; animation-delay: 0s, 2s;"></div>
+            <div class="bubble" style="left: 65%; width: 25px; height: 25px; animation-duration: 9s, 3.5s; animation-delay: 3s, 1.5s;"></div>
+            <div class="bubble" style="left: 80%; width: 18px; height: 18px; animation-duration: 7s, 3s; animation-delay: 1.5s, 0s;"></div>
+            <div class="bubble" style="left: 90%; width: 30px; height: 30px; animation-duration: 10s, 4s; animation-delay: 4s, 2s;"></div>
+            <div class="bubble" style="left: 5%; width: 12px; height: 12px; animation-duration: 5s, 2.5s; animation-delay: 3s, 1s;"></div>
+            <div class="bubble" style="left: 45%; width: 28px; height: 28px; animation-duration: 12s, 4.5s; animation-delay: 5s, 0.5s;"></div>
+            <div class="bubble" style="left: 75%; width: 22px; height: 22px; animation-duration: 8.5s, 3.2s; animation-delay: 2.5s, 1.2s;"></div>
+        </div>
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center relative z-10">
             <div class="lg:w-1/2 text-center lg:text-left pr-0 lg:pr-12" data-aos="fade-right" data-aos-delay="200">
                 <span class="inline-flex items-center py-1 px-3 rounded-full bg-white border border-green-200 text-green-700 text-xs font-bold tracking-wide mb-6 shadow-sm">
