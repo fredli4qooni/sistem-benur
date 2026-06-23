@@ -39,6 +39,12 @@ class DashboardController extends Controller
             }
         }
 
+        // Tambahkan hari ini agar tren harga yang baru ditambah tetap jadi garis
+        $todayFormatted = now()->format('d M Y');
+        if (!in_array($todayFormatted, $allDates) && count($allDates) > 0) {
+            $allDates[] = $todayFormatted;
+        }
+
         // Menyusun data Y (Harga) per produk
         foreach ($products as $product) {
             $productPrices = [];
