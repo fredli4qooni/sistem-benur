@@ -32,18 +32,22 @@ class ReportController extends Controller
 
     public function exportPdf(Request $request)
     {
-        $startDate = $request->input('start_date', Carbon::now()->subDays(30)->format('Y-m-d'));
-        $endDate = $request->input('end_date', Carbon::now()->format('Y-m-d'));
+        try {
+            $startDate = $request->input('start_date', Carbon::now()->subDays(30)->format('Y-m-d'));
+            $endDate = $request->input('end_date', Carbon::now()->format('Y-m-d'));
 
-        $orders = Order::with(['user', 'items.product'])
-            ->whereIn('status', ['dikonfirmasi', 'disiapkan', 'dikirim', 'selesai'])
-            ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
-            ->latest()
-            ->get();
+            $orders = Order::with(['user', 'items.product'])
+                ->whereIn('status', ['dikonfirmasi', 'disiapkan', 'dikirim', 'selesai'])
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->latest()
+                ->get();
 
-        $pdf = Pdf::loadView('admin.reports.table', compact('orders', 'startDate', 'endDate'));
-        
-        return $pdf->download('Laporan_Penjualan_Benur_' . $startDate . '_sd_' . $endDate . '.pdf');
+            $pdf = Pdf::loadView('admin.reports.table', compact('orders', 'startDate', 'endDate'));
+            
+            return $pdf->download('Laporan_Penjualan_Benur_' . $startDate . '_sd_' . $endDate . '.pdf');
+        } catch (\Exception $e) {
+            return response('Terjadi kesalahan saat mencetak PDF: ' . $e->getMessage() . ' pada baris ' . $e->getLine() . ' di file ' . $e->getFile(), 500);
+        }
     }
 
     public function exportExcel(Request $request)
