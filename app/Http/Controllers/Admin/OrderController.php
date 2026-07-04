@@ -11,6 +11,9 @@ class OrderController extends Controller
 {
     public function index()
     {
+        // Tandai pesanan baru sebagai "dilihat" dengan menyimpan timestamp saat ini di session
+        session()->put('admin_last_seen_orders', now());
+
         $orders = Order::with(['user', 'transaction'])->latest()->paginate(10);
         return view('admin.orders.index', compact('orders'));
     }

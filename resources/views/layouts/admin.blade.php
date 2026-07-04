@@ -34,10 +34,20 @@
                 Katalog Benur
             </a>
 
+            @php
+                $lastSeen = session('admin_last_seen_orders');
+                $newOrdersCount = \App\Models\Order::where('status', 'pending')
+                    ->when($lastSeen, function($query) use ($lastSeen) {
+                        $query->where('created_at', '>', $lastSeen);
+                    })
+                    ->count();
+            @endphp
             <a href="{{ route('admin.orders.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.orders.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                 <i class="{{ request()->routeIs('admin.orders.*') ? 'ph-fill' : 'ph' }} ph-shopping-cart text-xl mr-3 {{ request()->routeIs('admin.orders.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
                 Pesanan Masuk
-                <span class="ml-auto bg-red-100 text-red-600 py-0.5 px-2 rounded-full text-[10px] font-bold">Baru</span>
+                @if($newOrdersCount > 0)
+                <span class="ml-auto bg-red-100 text-red-600 py-0.5 px-2 rounded-full text-[10px] font-bold">{{ $newOrdersCount }} Baru</span>
+                @endif
             </a>
 
             <a href="{{ route('admin.customers.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.customers.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
