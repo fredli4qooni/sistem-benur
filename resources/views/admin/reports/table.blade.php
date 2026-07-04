@@ -36,14 +36,14 @@
                     <td>{{ $order->order_number }}</td>
                     <td>{{ $order->user->name }}</td>
                     <td>{{ ucfirst($order->status) }}</td>
-                    <td class="text-right">{{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                    <td class="text-right">{{ isset($isExcel) && $isExcel ? $order->total_amount : number_format($order->total_amount, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="5" class="text-right">TOTAL PENDAPATAN</th>
-                <th class="text-right" style="color: #1A6B3C; font-weight: bold;">{{ number_format($total, 0, ',', '.') }}</th>
+                <th class="text-right" style="color: #1A6B3C; font-weight: bold;">{{ isset($isExcel) && $isExcel ? $total : number_format($total, 0, ',', '.') }}</th>
             </tr>
         </tfoot>
     </table>

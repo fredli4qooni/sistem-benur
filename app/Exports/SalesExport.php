@@ -29,7 +29,8 @@ class SalesExport implements FromView, ShouldAutoSize
         return view('admin.reports.table', [
             'orders' => $orders,
             'startDate' => $this->startDate,
-            'endDate' => $this->endDate
+            'endDate' => $this->endDate,
+            'isExcel' => true
         ]);
     }
 }
