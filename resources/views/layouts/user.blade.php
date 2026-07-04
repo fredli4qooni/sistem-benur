@@ -35,15 +35,15 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <div class="hidden md:flex items-center space-x-2 border-r border-gray-200 pr-4">
-                    <div class="w-8 h-8 rounded-full bg-green-50 text-[#1A6B3C] flex items-center justify-center font-bold text-sm border border-green-100">
+                <a href="{{ route('profile.edit') }}" class="hidden md:flex items-center space-x-2 border-r border-gray-200 pr-4 hover:bg-gray-50 px-2 py-1 rounded-lg transition-colors group">
+                    <div class="w-8 h-8 rounded-full bg-green-50 text-[#1A6B3C] group-hover:bg-green-100 flex items-center justify-center font-bold text-sm border border-green-100">
                         {{ substr(Auth::user()->name, 0, 1) }}
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-sm font-semibold text-gray-700 leading-tight">{{ Auth::user()->name }}</span>
+                        <span class="text-sm font-semibold text-gray-700 leading-tight group-hover:text-gray-900">{{ Auth::user()->name }}</span>
                         <span class="text-[10px] text-gray-400 font-medium uppercase">Pelanggan</span>
                     </div>
-                </div>
+                </a>
                 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
