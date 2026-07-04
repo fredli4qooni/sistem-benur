@@ -14,7 +14,7 @@
     <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             
-            <a href="{{ route('user.catalog') }}" class="flex items-center space-x-2">
+            <a href="{{ Auth::check() ? route('profile.edit') : url('/#katalog') }}" class="flex items-center space-x-2">
                 <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C]"></i>
                 <span class="text-xl font-extrabold text-gray-900 tracking-tight">SENTRA BENUR</span>
             </a>

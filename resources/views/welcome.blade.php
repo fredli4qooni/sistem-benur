@@ -82,10 +82,10 @@
     <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200 fixed w-full z-50 top-0 transition-all" data-aos="fade-down" data-aos-duration="600">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center space-x-2">
+                <a href="{{ Auth::check() ? route('profile.edit') : url('/#katalog') }}" class="flex-shrink-0 flex items-center space-x-2">
                     <i class="ph-fill ph-shrimp text-2xl text-[#1A6B3C]"></i>
                     <span class="text-xl font-extrabold text-gray-900 tracking-tight">SENTRA BENUR</span>
-                </div>
+                </a>
                 <div class="flex items-center space-x-4">
                     @if (Route::has('login'))
                     @auth
