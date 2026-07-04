@@ -38,9 +38,9 @@
 
     <a href="{{ route('admin.orders.index') }}" class="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col sm:flex-row items-start justify-between hover:border-amber-300 transition-colors group block">
         <div class="space-y-1.5 sm:space-y-2 order-2 sm:order-1 mt-2 sm:mt-0">
-            <span class="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider group-hover:text-amber-700 transition-colors leading-tight line-clamp-1">Validasi</span>
+            <span class="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider group-hover:text-amber-700 transition-colors leading-tight line-clamp-1">Perlu Tindakan</span>
             <p class="text-base sm:text-2xl font-extrabold leading-none {{ $pendingOrdersCount > 0 ? 'text-amber-600' : 'text-gray-900' }}">{{ $pendingOrdersCount }} <span class="text-xs font-normal sm:font-extrabold">Pesanan</span></p>
-            <span class="hidden sm:inline-block text-xs {{ $pendingOrdersCount > 0 ? 'bg-amber-50 text-amber-700' : 'bg-gray-100 text-gray-500' }} font-medium px-2 py-0.5 rounded-md">Pending</span>
+            <span class="hidden sm:inline-block text-xs {{ $pendingOrdersCount > 0 ? 'bg-amber-50 text-amber-700' : 'bg-gray-100 text-gray-500' }} font-medium px-2 py-0.5 rounded-md">Baru</span>
         </div>
         <div class="w-7 h-7 sm:w-10 sm:h-10 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center text-gray-700 group-hover:bg-amber-50 transition-colors order-1 sm:order-2">
             <i class="ph ph-clock-counter-clockwise text-base sm:text-xl text-amber-500"></i>

@@ -36,7 +36,7 @@
 
             @php
                 $lastSeen = session('admin_last_seen_orders');
-                $newOrdersCount = \App\Models\Order::where('status', 'pending')
+                $newOrdersCount = \App\Models\Order::whereIn('status', ['pending', 'dikonfirmasi'])
                     ->when($lastSeen, function($query) use ($lastSeen) {
                         $query->where('created_at', '>', $lastSeen);
                     })
@@ -107,7 +107,7 @@
 
             <div class="flex items-center space-x-4">
                 @php
-                    $headerPendingOrders = \App\Models\Order::where('status', 'pending')->count();
+                    $headerPendingOrders = \App\Models\Order::whereIn('status', ['pending', 'dikonfirmasi'])->count();
                 @endphp
                 <a href="{{ route('admin.orders.index') }}" class="text-gray-400 hover:text-gray-600 transition relative" title="Pesanan Pending">
                     <i class="ph ph-bell text-xl"></i>
@@ -141,7 +141,7 @@
             <i class="{{ request()->routeIs('admin.orders.*') ? 'ph-fill' : 'ph' }} ph-shopping-cart text-2xl"></i>
             <span class="text-[10px] font-semibold">Pesanan</span>
             @php
-                $pendingOrders = \App\Models\Order::where('status', 'pending')->count();
+                $pendingOrders = \App\Models\Order::whereIn('status', ['pending', 'dikonfirmasi'])->count();
             @endphp
             @if($pendingOrders > 0)
                 <span class="absolute top-1 right-3 w-2.5 h-2.5 bg-red-500 rounded-full border border-white"></span>

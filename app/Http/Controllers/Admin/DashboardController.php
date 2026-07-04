@@ -23,8 +23,8 @@ class DashboardController extends Controller
         $ordersThisWeek = Order::where('created_at', '>=', $startOfWeek)->count();
         $ordersThisMonth = Order::where('created_at', '>=', $startOfMonth)->count();
 
-        // 2. Pesanan Pending yang perlu tindakan validasi
-        $pendingOrdersCount = Order::where('status', 'pending')->count();
+        // 2. Pesanan Pending/Dikonfirmasi yang perlu tindakan validasi/persiapan
+        $pendingOrdersCount = Order::whereIn('status', ['pending', 'dikonfirmasi'])->count();
 
         // 3. Pelanggan Aktif (Role user & status aktif)
         $activeCustomersCount = User::where('role', 'user')
