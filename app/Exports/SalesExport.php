@@ -6,8 +6,10 @@ use App\Models\Order;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class SalesExport implements FromView, ShouldAutoSize
+class SalesExport implements FromView, ShouldAutoSize, WithColumnFormatting
 {
     protected string $startDate;
     protected string $endDate;
@@ -32,5 +34,12 @@ class SalesExport implements FromView, ShouldAutoSize
             'endDate' => $this->endDate,
             'isExcel' => true
         ]);
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
 }
