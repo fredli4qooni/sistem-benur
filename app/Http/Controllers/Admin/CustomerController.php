@@ -37,12 +37,12 @@ class CustomerController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-            'status' => 'required|in:aktif,nonaktif,blokir'
+            'address' => 'nullable|string'
         ]);
 
         $validated['password'] = \Illuminate\Support\Facades\Hash::make($validated['password']);
         $validated['role'] = 'user';
+        $validated['status'] = 'aktif';
 
         User::create($validated);
 
@@ -68,8 +68,7 @@ class CustomerController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $customer->id,
             'password' => 'nullable|string|min:8',
             'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-            'status' => 'required|in:aktif,nonaktif,blokir'
+            'address' => 'nullable|string'
         ]);
 
         if (!empty($validated['password'])) {

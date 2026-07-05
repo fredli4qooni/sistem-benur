@@ -36,7 +36,6 @@
                     <th class="px-6 py-4">Nama & Email</th>
                     <th class="px-6 py-4">No. Telepon / WA</th>
                     <th class="px-6 py-4">Alamat Tambak</th>
-                    <th class="px-6 py-4">Status Akun</th>
                     <th class="px-6 py-4 text-right">Aksi</th>
                 </tr>
             </thead>
@@ -59,21 +58,6 @@
                     </td>
                     <td class="px-6 py-4 text-gray-500 max-w-xs truncate" title="{{ $customer->address }}">
                         {{ $customer->address ?? '-' }}
-                    </td>
-                    <td class="px-6 py-4">
-                        @if($customer->status === 'aktif')
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-green-50 text-green-700 border border-green-100">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span> Aktif
-                            </span>
-                        @elseif($customer->status === 'nonaktif')
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-600 border border-gray-200">
-                                <span class="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5"></span> Nonaktif
-                            </span>
-                        @else
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-red-50 text-red-700 border border-red-100">
-                                <span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"></span> Diblokir
-                            </span>
-                        @endif
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex items-center justify-end space-x-2">
@@ -113,21 +97,6 @@
                 <div class="ml-3 flex-1 overflow-hidden">
                     <p class="font-bold text-gray-900 leading-tight truncate">{{ $customer->name }}</p>
                     <p class="text-[11px] text-gray-500 font-mono truncate">{{ $customer->email }}</p>
-                </div>
-                <div class="shrink-0 ml-2">
-                    @if($customer->status === 'aktif')
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-green-50 text-green-700">
-                            Aktif
-                        </span>
-                    @elseif($customer->status === 'nonaktif')
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-gray-100 text-gray-600">
-                            Nonaktif
-                        </span>
-                    @else
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold bg-red-50 text-red-700">
-                            Diblokir
-                        </span>
-                    @endif
                 </div>
             </div>
             <div class="text-xs text-gray-600 space-y-1 pl-13">

@@ -45,24 +45,12 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Status Akun <span class="text-red-500">*</span></label>
-                    <select name="status" required class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1A6B3C] focus:bg-white transition-all text-sm @error('status') border-red-500 @enderror">
-                        <option value="aktif" {{ old('status') === 'aktif' ? 'selected' : '' }}>Aktif</option>
-                        <option value="nonaktif" {{ old('status') === 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
-                        <option value="blokir" {{ old('status') === 'blokir' ? 'selected' : '' }}>Blokir</option>
-                    </select>
-                    @error('status')
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nomor WhatsApp/Telepon</label>
+                    <input type="text" name="phone" value="{{ old('phone') }}" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1A6B3C] focus:bg-white transition-all text-sm @error('phone') border-red-500 @enderror">
+                    @error('phone')
                         <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
                     @enderror
                 </div>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nomor WhatsApp/Telepon</label>
-                <input type="text" name="phone" value="{{ old('phone') }}" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1A6B3C] focus:bg-white transition-all text-sm @error('phone') border-red-500 @enderror">
-                @error('phone')
-                    <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
-                @enderror
             </div>
 
             <div>
