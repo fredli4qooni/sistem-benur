@@ -25,20 +25,72 @@ class CustomerController extends Controller
         return view('admin.customers.index', compact('customers', 'search'));
     }
 
-    public function updateStatus(Request $request, User $customer)
+    public function create()
+    {
+        return view('admin.customers.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
+            'status' => 'required|in:aktif,nonaktif,blokir'
+        ]);
+
+        $validated['password'] = \Illuminate\Support\Facades\Hash::make($validated['password']);
+        $validated['role'] = 'user';
+
+        User::create($validated);
+
+        return redirect()->route('admin.customers.index')->with('success', 'Pelanggan berhasil ditambahkan.');
+    }
+
+    public function edit(User $customer)
+    {
+        if ($customer->role !== 'user') {
+            abort(403, 'Tindakan tidak diizinkan.');
+        }
+        return view('admin.customers.edit', compact('customer'));
+    }
+
+    public function update(Request $request, User $customer)
     {
         if ($customer->role !== 'user') {
             abort(403, 'Tindakan tidak diizinkan.');
         }
 
         $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $customer->id,
+            'password' => 'nullable|string|min:8',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
             'status' => 'required|in:aktif,nonaktif,blokir'
         ]);
 
-        $customer->update([
-            'status' => $validated['status']
-        ]);
+        if (!empty($validated['password'])) {
+            $validated['password'] = \Illuminate\Support\Facades\Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
 
-        return back()->with('success', "Status akun pelanggan {$customer->name} berhasil diubah menjadi: " . strtoupper($validated['status']));
+        $customer->update($validated);
+
+        return redirect()->route('admin.customers.index')->with('success', 'Data pelanggan berhasil diperbarui.');
+    }
+
+    public function destroy(User $customer)
+    {
+        if ($customer->role !== 'user') {
+            abort(403, 'Tindakan tidak diizinkan.');
+        }
+
+        $customer->delete();
+
+        return redirect()->route('admin.customers.index')->with('success', 'Pelanggan berhasil dihapus.');
     }
 }
