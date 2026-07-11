@@ -12,7 +12,7 @@
 </div>
 @endif
 
-<form action="{{ route('user.checkout.store', $product->id) }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+<form action="{{ route('user.checkout.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
     @csrf
 
     <div class="lg:col-span-2 space-y-4 md:space-y-6">
@@ -71,28 +71,33 @@
         <div class="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-100 sticky top-20 md:top-24">
             <h2 class="text-base md:text-lg font-bold text-gray-800 border-b pb-2 md:pb-3 mb-3 md:mb-4">Ringkasan Pesanan</h2>
 
-            <div class="flex items-center space-x-4 mb-4">
-                @if($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" class="w-16 h-16 rounded object-cover">
-                @else
-                <div class="w-16 h-16 rounded bg-gray-200 flex items-center justify-center text-xs text-gray-500">No Pic</div>
-                @endif
-                <div>
-                    <h3 class="font-bold text-sm line-clamp-1">{{ $product->name }}</h3>
-                    <p class="text-xs text-gray-500">Rp {{ number_format($product->price, 0, ',', '.') }} / {{ $product->unit }}</p>
+            <div class="max-h-60 overflow-y-auto space-y-4 mb-4 pr-2">
+                @foreach($carts as $cart)
+                <div class="flex items-center space-x-4">
+                    @if($cart->product->image)
+                    <img src="{{ asset('storage/' . $cart->product->image) }}" class="w-12 h-12 rounded object-cover shrink-0">
+                    @else
+                    <div class="w-12 h-12 rounded bg-gray-200 flex items-center justify-center text-[10px] text-gray-500 shrink-0">No Pic</div>
+                    @endif
+                    <div class="flex-1 overflow-hidden">
+                        <h3 class="font-bold text-sm line-clamp-1 text-gray-800">{{ $cart->product->name }}</h3>
+                        <p class="text-xs text-gray-500">{{ $cart->quantity }} x Rp {{ number_format($cart->product->price, 0, ',', '.') }}</p>
+                    </div>
+                    <div class="font-semibold text-sm text-[#1A6B3C] shrink-0">
+                        Rp {{ number_format($cart->product->price * $cart->quantity, 0, ',', '.') }}
+                    </div>
                 </div>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah Pesanan ({{ $product->unit }})</label>
-                <input type="number" name="quantity" id="quantity" value="{{ old('quantity', 1) }}" min="1" max="{{ $product->stock }}" required class="w-full border-gray-300 rounded-md focus:ring-[#1A6B3C] focus:border-[#1A6B3C]">
-                <p class="text-xs text-gray-500 mt-1">Stok tersedia: {{ $product->stock }}</p>
+                @endforeach
             </div>
 
             <div class="border-t pt-4 mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-gray-600">Total Item</span>
+                    <span class="font-semibold text-gray-800">{{ $carts->sum('quantity') }}</span>
+                </div>
                 <div class="flex justify-between items-center">
                     <span class="font-medium text-gray-600">Total Pembayaran</span>
-                    <span class="font-bold text-xl text-[#1A6B3C]" id="total_price">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                    <span class="font-bold text-xl text-[#1A6B3C]" id="total_price">Rp {{ number_format($totalAmount, 0, ',', '.') }}</span>
                 </div>
             </div>
 
@@ -111,29 +116,6 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const pricePerUnit = Number("{{ $product->price }}");
-        const quantityInput = document.getElementById('quantity');
-        const totalPriceEl = document.getElementById('total_price');
-
-        quantityInput.addEventListener('input', function() {
-            let qty = parseInt(this.value);
-            if (isNaN(qty) || qty < 0) qty = 0;
-            
-            const total = qty * pricePerUnit;
-            totalPriceEl.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
-        });
-
-        quantityInput.addEventListener('blur', function() {
-            let qty = parseInt(this.value);
-            if (isNaN(qty) || qty < 1) {
-                this.value = 1;
-                qty = 1;
-            }
-            
-            const total = qty * pricePerUnit;
-            totalPriceEl.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
-        });
-
         flatpickr("#delivery_date", {
             minDate: "today",
             dateFormat: "Y-m-d",

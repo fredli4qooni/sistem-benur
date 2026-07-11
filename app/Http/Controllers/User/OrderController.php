@@ -38,19 +38,37 @@ class OrderController extends Controller
         return view('user.orders.show', compact('order'));
     }
 
-    public function create(Product $product)
+    public function create()
     {
-        if (!$product->status || $product->stock <= 0) {
-            return redirect()->route('user.catalog')->with('error', 'Maaf, produk tidak tersedia.');
+        $carts = Auth::user()->carts()->with('product')->get();
+
+        if ($carts->isEmpty()) {
+            return redirect()->route('user.catalog')->with('error', 'Keranjang Anda kosong.');
         }
 
-        return view('user.checkout', compact('product'));
+        // Cek ketersediaan stok
+        foreach ($carts as $cart) {
+            if (!$cart->product->status || $cart->product->stock < $cart->quantity) {
+                return redirect()->route('user.cart.index')->with('error', 'Produk ' . $cart->product->name . ' tidak tersedia atau stok kurang.');
+            }
+        }
+
+        $totalAmount = $carts->sum(function($cart) {
+            return $cart->product->price * $cart->quantity;
+        });
+
+        return view('user.checkout', compact('carts', 'totalAmount'));
     }
 
-    public function store(Request $request, Product $product)
+    public function store(Request $request)
     {
+        $carts = Auth::user()->carts()->with('product')->get();
+
+        if ($carts->isEmpty()) {
+            return redirect()->route('user.catalog')->with('error', 'Keranjang Anda kosong.');
+        }
+
         $request->validate([
-            'quantity' => 'required|integer|min:1|max:' . $product->stock,
             'delivery_date' => 'required|date|after_or_equal:today',
             'delivery_address' => 'required|string',
             'notes' => 'nullable|string',
@@ -65,7 +83,24 @@ class OrderController extends Controller
         try {
             DB::beginTransaction();
 
-            $totalAmount = $product->price * $request->quantity;
+            // Hitung total dan persiapkan item_details untuk Midtrans
+            $totalAmount = 0;
+            $itemDetails = [];
+
+            foreach ($carts as $cart) {
+                if (!$cart->product->status || $cart->product->stock < $cart->quantity) {
+                    throw new \Exception('Produk ' . $cart->product->name . ' tidak tersedia dalam jumlah yang diminta.');
+                }
+                $subtotal = $cart->product->price * $cart->quantity;
+                $totalAmount += $subtotal;
+
+                $itemDetails[] = [
+                    'id' => $cart->product->id,
+                    'price' => $cart->product->price,
+                    'quantity' => $cart->quantity,
+                    'name' => mb_substr($cart->product->name, 0, 50),
+                ];
+            }
 
             $order = Order::create([
                 'order_number' => 'ORD-' . strtoupper(Str::random(8)),
@@ -77,13 +112,17 @@ class OrderController extends Controller
                 'notes' => $request->notes,
             ]);
 
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product->id,
-                'quantity' => $request->quantity,
-                'unit_price' => $product->price,
-                'subtotal' => $totalAmount,
-            ]);
+            // Buat OrderItems dan kurangi stok (opsional, tergantung kebijakan, di sini kita biarkan stok utuh sampai dikonfirmasi atau kita bisa kurangi sekarang)
+            // Sebaiknya tidak mengurangi stok saat pending, tapi sudah terlanjur di struktur lama stok dikurangi saat dikonfirmasi admin.
+            foreach ($carts as $cart) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cart->product->id,
+                    'quantity' => $cart->quantity,
+                    'unit_price' => $cart->product->price,
+                    'subtotal' => $cart->product->price * $cart->quantity,
+                ]);
+            }
 
             $isTunai = $request->payment_method === 'tunai';
 
@@ -95,39 +134,30 @@ class OrderController extends Controller
             ]);
 
             if (!$isTunai) {
-                // Set konfigurasi Midtrans
                 Config::$serverKey = config('midtrans.server_key');
                 Config::$isProduction = config('midtrans.is_production');
                 Config::$isSanitized = config('midtrans.is_sanitized');
                 Config::$is3ds = config('midtrans.is_3ds');
 
-                // Persiapkan parameter untuk dikirim ke Midtrans
                 $params = [
                     'transaction_details' => [
                         'order_id' => $order->order_number,
                         'gross_amount' => $totalAmount,
                     ],
                     'customer_details' => [
-                        'first_name' => Auth::user()->name,
+                        'first_name' => mb_substr(Auth::user()->name, 0, 50),
                         'email' => Auth::user()->email,
                         'phone' => Auth::user()->phone ?? '',
                     ],
-                    'item_details' => [
-                        [
-                            'id' => $product->id,
-                            'price' => $product->price,
-                            'quantity' => $request->quantity,
-                            'name' => $product->name,
-                        ]
-                    ]
+                    'item_details' => $itemDetails
                 ];
 
-                // Dapatkan Snap Token dari Midtrans
                 $snapToken = Snap::getSnapToken($params);
-
-                // Simpan snap token ke dalam transaksi
                 $transaction->update(['snap_token' => $snapToken]);
             }
+
+            // Hapus isi keranjang
+            Auth::user()->carts()->delete();
 
             DB::commit();
 

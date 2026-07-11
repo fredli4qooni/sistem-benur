@@ -28,6 +28,16 @@
                     <i class="{{ request()->routeIs('user.dashboard') ? 'ph-fill' : 'ph' }} ph-trend-up text-lg"></i>
                     <span>Tren Harga</span>
                 </a>
+                <a href="{{ route('user.cart.index') }}" class="flex items-center space-x-1.5 transition-colors {{ request()->routeIs('user.cart.*') ? 'text-[#1A6B3C] font-semibold' : 'text-gray-500 hover:text-gray-900' }}">
+                    <div class="relative">
+                        <i class="{{ request()->routeIs('user.cart.*') ? 'ph-fill' : 'ph' }} ph-shopping-cart text-lg"></i>
+                        @php $cartCount = Auth::check() ? Auth::user()->carts()->count() : 0; @endphp
+                        @if($cartCount > 0)
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{{ $cartCount }}</span>
+                        @endif
+                    </div>
+                    <span>Keranjang</span>
+                </a>
                 <a href="{{ route('user.orders.index') }}" class="flex items-center space-x-1.5 transition-colors {{ request()->routeIs('user.orders.*') ? 'text-[#1A6B3C] font-semibold' : 'text-gray-500 hover:text-gray-900' }}">
                     <i class="{{ request()->routeIs('user.orders.*') ? 'ph-fill' : 'ph' }} ph-receipt text-lg"></i>
                     <span>Pesanan Saya</span>
@@ -69,6 +79,17 @@
         <a href="{{ route('user.dashboard') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.dashboard') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
             <i class="{{ request()->routeIs('user.dashboard') ? 'ph-fill' : 'ph' }} ph-trend-up text-2xl"></i>
             <span class="text-[10px] font-semibold">Tren Harga</span>
+        </a>
+        
+        <a href="{{ route('user.cart.index') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.cart.*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">
+            <div class="relative">
+                <i class="{{ request()->routeIs('user.cart.*') ? 'ph-fill' : 'ph' }} ph-shopping-cart text-2xl"></i>
+                @php $cartCount = Auth::check() ? Auth::user()->carts()->count() : 0; @endphp
+                @if($cartCount > 0)
+                <span class="absolute -top-1 -right-1.5 bg-red-500 text-white text-[9px] font-bold px-1.5 rounded-full">{{ $cartCount }}</span>
+                @endif
+            </div>
+            <span class="text-[10px] font-semibold">Keranjang</span>
         </a>
         
         <a href="{{ route('user.orders.index') }}" class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors {{ request()->routeIs('user.orders.*') ? 'text-[#1A6B3C]' : 'text-gray-400 hover:text-gray-600' }}">

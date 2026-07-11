@@ -58,9 +58,14 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/katalog', [CatalogController::class, 'index'])->name('catalog');
+        Route::get('/cart', [\App\Http\Controllers\User\CartController::class, 'index'])->name('cart.index');
+        Route::post('/cart/add/{product}', [\App\Http\Controllers\User\CartController::class, 'store'])->name('cart.store');
+        Route::patch('/cart/{cart}', [\App\Http\Controllers\User\CartController::class, 'update'])->name('cart.update');
+        Route::delete('/cart/{cart}', [\App\Http\Controllers\User\CartController::class, 'destroy'])->name('cart.destroy');
 
-        Route::get('/checkout/{product}', [OrderController::class, 'create'])->name('checkout');
-        Route::post('/checkout/{product}', [OrderController::class, 'store'])->name('checkout.store');
+        // Orders & Checkout
+        Route::get('/checkout', [OrderController::class, 'create'])->name('checkout');
+        Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
 
         Route::get('/payment/{order}', [PaymentController::class, 'show'])->name('payment');
 

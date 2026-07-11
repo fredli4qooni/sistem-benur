@@ -65,10 +65,14 @@
 
                 <div class="mt-3 sm:mt-5">
                     @if($product->stock > 0)
-                        <a href="{{ route('user.checkout', $product->id) }}" class="w-full flex items-center justify-center bg-white border border-[#1A6B3C] sm:border-2 text-[#1A6B3C] font-bold py-1.5 sm:py-2.5 rounded-md sm:rounded-lg hover:bg-[#1A6B3C] hover:text-white transition-colors duration-200 text-[11px] sm:text-sm">
-                            <i class="ph ph-shopping-cart text-sm sm:text-lg mr-1.5 sm:mr-2"></i>
-                            Pesan
-                        </a>
+                        <form action="{{ route('user.cart.store', $product->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="w-full flex items-center justify-center bg-white border border-[#1A6B3C] sm:border-2 text-[#1A6B3C] font-bold py-1.5 sm:py-2.5 rounded-md sm:rounded-lg hover:bg-[#1A6B3C] hover:text-white transition-colors duration-200 text-[11px] sm:text-sm">
+                                <i class="ph ph-shopping-cart text-sm sm:text-lg mr-1.5 sm:mr-2"></i>
+                                Tambah
+                            </button>
+                        </form>
                     @else
                         <button disabled class="w-full flex items-center justify-center bg-gray-50 border border-gray-100 sm:border-2 text-gray-400 font-bold py-1.5 sm:py-2.5 rounded-md sm:rounded-lg cursor-not-allowed text-[11px] sm:text-sm">
                             <i class="ph ph-prohibit text-sm sm:text-lg mr-1.5 sm:mr-2"></i>
