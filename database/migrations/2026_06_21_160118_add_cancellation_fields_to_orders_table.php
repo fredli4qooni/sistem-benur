@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->boolean('is_cancellation_requested')->default(false)->after('status');
-            $table->text('cancel_reason')->nullable()->after('is_cancellation_requested');
-        });
+        if (!Schema::hasColumn('orders', 'is_cancellation_requested')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->boolean('is_cancellation_requested')->default(false)->after('status');
+                $table->text('cancel_reason')->nullable()->after('is_cancellation_requested');
+            });
+        }
     }
 
     /**

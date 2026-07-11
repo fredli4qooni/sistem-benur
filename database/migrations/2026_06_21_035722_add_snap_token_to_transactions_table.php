@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->string('snap_token')->nullable()->after('status');
-        });
+        if (!Schema::hasColumn('transactions', 'snap_token')) {
+            Schema::table('transactions', function (Blueprint $table) {
+                $table->string('snap_token')->nullable()->after('status');
+            });
+        }
     }
 
     /**
