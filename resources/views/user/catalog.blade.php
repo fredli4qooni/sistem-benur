@@ -50,7 +50,19 @@
 
                 <div class="mt-auto pt-2 sm:pt-4 border-t border-gray-50">
                     <p class="text-[9px] sm:text-xs text-gray-400 font-medium mb-0.5 sm:mb-1 uppercase tracking-wider">Harga per {{ $product->unit }}</p>
-                    <p class="text-sm sm:text-xl font-extrabold text-[#1A6B3C] tracking-tight">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                    <div class="flex items-center space-x-2">
+                        <p class="text-sm sm:text-xl font-extrabold text-[#1A6B3C] tracking-tight">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                        @php $change = $product->price_change_percentage; @endphp
+                        @if($change > 0)
+                            <span class="flex items-center text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded border border-red-100" title="Harga naik">
+                                <i class="ph-bold ph-trend-up mr-0.5"></i> {{ $change }}%
+                            </span>
+                        @elseif($change < 0)
+                            <span class="flex items-center text-[10px] font-bold text-green-500 bg-green-50 px-1.5 py-0.5 rounded border border-green-100" title="Harga turun">
+                                <i class="ph-bold ph-trend-down mr-0.5"></i> {{ abs($change) }}%
+                            </span>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="mt-2 sm:mt-3 flex items-center text-[10px] sm:text-xs font-medium">
