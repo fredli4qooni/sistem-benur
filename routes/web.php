@@ -12,6 +12,7 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
     $featuredProducts = \App\Models\Product::where('status', 1)->latest()->take(4)->get();
@@ -40,6 +41,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::post('/orders/{order}/mark-paid', [AdminOrderController::class, 'markAsPaid'])->name('orders.mark-paid');
 
         Route::resource('customers', CustomerController::class);
+        Route::resource('admins', AdminController::class);
 
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('/reports/pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf');

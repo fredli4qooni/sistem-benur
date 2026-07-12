@@ -55,6 +55,11 @@
                 Data Pelanggan
             </a>
 
+            <a href="{{ route('admin.admins.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.admins.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                <i class="{{ request()->routeIs('admin.admins.*') ? 'ph-fill' : 'ph' }} ph-user-circle-gear text-xl mr-3 {{ request()->routeIs('admin.admins.*') ? 'text-[#1A6B3C]' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
+                Data Admin
+            </a>
+
             <p class="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-6">Analitik & Sistem</p>
 
             <a href="{{ route('admin.reports.index') }}" class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->routeIs('admin.reports.*') ? 'bg-green-50 text-[#1A6B3C] font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
